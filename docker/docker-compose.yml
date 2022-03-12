@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  document:
+    container_name: document
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.development
+    ports:
+      - 8001:7000
+    networks:
+      - shared-nw
+    # depends_on:
+    #   - postgres
+    #   - elasticsearch
+    #   # - rabbitmq
+    # env_file:
+    #   - ../.env.docker
+    volumes:
+      - ../src:/app/src:cached
+      - ../output:/app/output:cached
+
+networks:
+  shared-nw:
+    name: shared-nw
