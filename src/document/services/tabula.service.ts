@@ -4,6 +4,7 @@ import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
 import { findPhoneNumbersInText } from 'libphonenumber-js';
 import { TransactionType } from '../type/transaction.type';
+import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
 
 const knownSummaryItems = [
   { field: 'SEND MONEY:', name: 'sendMoneyIn' },
@@ -79,7 +80,6 @@ function formatHiddenPhoneNumber(item) {
   const deconstruct = item.split('-')[1].trim().replaceAll('\'', '');
   const split = deconstruct.split(' ');
   const [phoneNumberSecret, ...name] = split;
-
   const fullName = name.join(' ');
   const firstName = name[0];
   const lastName = name.slice(1).join(' ');
@@ -91,7 +91,7 @@ function foundPhoneNumber(phoneNumber, item) {
   const [text, ...name] = deconstruct;
   const fullName = name.join(' ');
   const [firstName, ...lastName] = name[0].trim().split(' ');
-  return { firstName, lastName: lastName.join(' '), fullName, phoneNumber };
+  return { firstName, lastName: lastName.join(' '), fullName: fullName.trim(), phoneNumber };
 }
 
 
@@ -111,12 +111,6 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
       knownSummaryItems.forEach(item => {
 
         if (textFirstItem === item.field) {
-          // let summaryDetails = {
-          //     type: item.name,
-          //     in: row[1]?.text ? parseFloat(row[1]?.text.replaceAll(",", "")) : null,
-          //     out: row[2]?.text ? parseFloat(row[2]?.text.replaceAll(",", "")) : null,
-          // }
-
           summary[item.name] = {
             in: row[1]?.text ? parseFloat(row[1]?.text.replaceAll(',', '')) : null,
             out: row[2]?.text ? parseFloat(row[2]?.text.replaceAll(',', '')) : null,
@@ -124,15 +118,10 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
         }
       });
 
-
-
-
-
-
       const transactionsTypes = [
         {
           field: 'Funds received from',
-          name: 'recievedFrom',
+          name: 'from',
           value: (item) => {
             const findPhone = findPhoneNumbersInText(item, 'KE');
             if (findPhone[0]?.number?.number) {
@@ -145,7 +134,7 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
         },
         {
           field: 'Customer Transfer to',
-          name: 'sendTo',
+          name: 'to',
           value: (item) => {
             const findPhone = findPhoneNumbersInText(item, 'KE');
             if (findPhone[0]?.number?.number) {
@@ -159,7 +148,7 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
         },
         {
           field: 'Customer Payment to',
-          name: 'sendTo',
+          name: 'to',
           value: (item) => {
             const findPhone = findPhoneNumbersInText(item, 'KE');
             if (findPhone[0]?.number?.number) {
@@ -180,20 +169,27 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
         let transactionLinkItem = null;
         transactionsTypes.forEach(item => {
           if (transactionsDetails.includes(item.field)) {
-            transactionLinkItem = { name: item.name, values: item.value(transactionsDetails) };
-
+            transactionLinkItem = { direction: item.name, values: item.value(transactionsDetails) };
           }
         });
 
+
+        const amountIn = row[4]?.text ? parseFloat(row[4]?.text.replaceAll(',', '')) : null;
+        const  amountOut = row[5]?.text ? Math.abs(parseFloat(row[5]?.text.replaceAll(',', ''))) : null;
+        const amount = amountIn || amountOut;
+
         transactions.push({
           transactionId: row[0]?.text,
-          date: new Date(row[1]?.text),
-          transactionsDetails,
+          createdAt: new Date(row[1]?.text),
+          description: transactionsDetails,
           transactionLinkItem,
           status: row[3]?.text,
-          in: row[4]?.text ? parseFloat(row[4]?.text.replaceAll(',', '')) : null,
-          out: row[5]?.text ? Math.abs(parseFloat(row[5]?.text.replaceAll(',', ''))) : null,
-          balance: row[6]?.text ? parseFloat(row[6]?.text.replaceAll(',', '')) : null,
+          in: amountIn,
+          out: amountOut,
+          currency: CurrencyEnum.KES,
+          method: TransactionMethodEnum.MPESA,
+          amount: amount,
+          balanceAfter: row[6]?.text ? parseFloat(row[6]?.text.replaceAll(',', '')) : null,
         });
       }
 

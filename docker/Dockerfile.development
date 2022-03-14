@@ -4,16 +4,14 @@ FROM node:gallium-slim
 WORKDIR /app
 
 COPY ./src ./src
-# COPY ./prisma ./prisma
+COPY ./prisma ./prisma
 COPY package.json ./
-# COPY yarn.lock ./
 COPY .eslintrc.js ./
 COPY nest-cli.json ./
 COPY tsconfig.json ./
 COPY tsconfig.build.json ./
 COPY ./output ./output
 COPY ./input ./input
-# COPY .env.docker ./
 
 RUN apt-get update
 RUN apt-get install -y openssl
@@ -21,12 +19,9 @@ RUN apt-get install -y procps
 RUN apt-get install -y pdfcrack
 RUN apt-get install -y default-jre
 
-# RUN apt-get install python -y
-
-
 RUN yarn --network-timeout 100000
 
 EXPOSE 7000
 
-CMD [ "yarn", "run", "dev" ]
+CMD [ "yarn", "run", "migrate-and-run" ]
 

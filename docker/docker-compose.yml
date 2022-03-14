@@ -18,6 +18,7 @@ services:
     #   - ../.env.docker
     volumes:
       - ../src:/app/src:cached
+      - ../prisma:/app/prisma:cached
       - ../output:/app/output:cached
 
 networks:

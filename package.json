@@ -8,12 +8,14 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
+    "migrate-and-run": "yarn prisma generate && yarn run dev",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "copyPrismaOrigin": "cp ../Sevi-Exodus/prisma/schema.prisma ./prisma/schema.prisma",
     "start": "nest start",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "docker": "yarn prisma generate && docker compose -f ./docker/docker-compose.yml up document",
+    "docker": "yarn copyPrismaOrigin && yarn prisma generate && docker compose -f ./docker/docker-compose.yml up document",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -25,6 +27,7 @@
     "@aws-sdk/client-textract": "^3.53.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/graphql": "^10.0.6",
     "@nestjs/platform-express": "^8.0.0",
     "@prisma/client": "^3.10.0",
     "arangojs": "^7.7.0",
@@ -32,13 +35,14 @@
     "date-fns": "^2.28.0",
     "eslint-config-airbnb-typescript": "^16.1.1",
     "eslint-plugin-import": "^2.25.4",
+    "graphql-type-json": "^0.3.2",
     "imap-simple": "^5.1.0",
     "libphonenumber-js": "^1.9.49",
     "pdf-to-base64": "^1.0.3",
     "pdf2json": "^2.0.0",
     "pdf2table": "^0.0.2",
     "prisma": "^3.10.0",
-    "prisma-nestjs-graphql": "^14.7.0",
+    "prisma-nestjs-graphql": "^14.7.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
@@ -83,8 +87,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "prisma": {
-    "schema": "../Sevi-Exodus/prisma/schema.prisma"
   }
 }
