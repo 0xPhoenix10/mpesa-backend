@@ -14,5 +14,8 @@
     "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-  }
+  },
+  "exclude": [
+    "./prisma/@generated"
+  ]
 }

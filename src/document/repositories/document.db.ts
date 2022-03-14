@@ -1,4 +1,5 @@
 // import { User } from '@prisma/client';
+import { Transaction, User } from '@prisma/client';
 import { aql } from 'arangojs';
 import { db } from 'src/partners/authArango';
 
@@ -32,25 +33,7 @@ export const document = {
       console.error(err.message);
     }
   },
-  async MpesaToGraph(documentData) {
-    const { name, documentId,  phoneNumber, email, requestDate, period } = documentData.user;
-    const fromUser = await this.findOrCreateFrom({ name, documentId,  phoneNumber, email });
-    console.log('fromUser:', fromUser);
-
-    const mpesaSummary = {
-      requestDate,
-      period,
-      ...documentData.summary,
-    };
-
-    // Add mepsa details to user account
-    this.addInfoToUser(fromUser._key, { mpesa: mpesaSummary });
-
-    // add All transaction to Users.
-    
-
-
-  },
+ 
 
   async addInfoToUser(key, data) {
     const update = await db.query(
@@ -64,31 +47,57 @@ export const document = {
   },
 
 
-  async findOrCreateFrom(userDetails): Promise<any> {
+  async findOrCreateFrom(userDetails : Partial<User>): Promise<any> {
     try {
       const searchIfExists = await db.query(
         aql`
-            FOR u IN user
-            FILTER u.phoneNumber == ${userDetails.phoneNumber} 
-            RETURN u
+            UPSERT  { phoneNumber: ${userDetails.phoneNumber}  }
+            INSERT ${userDetails}  
+            UPDATE {}
+            INTO user
+            RETURN NEW
         `,
       );
       const [user] = await searchIfExists.all();
-      if (user) return user;
-      if (!user) {
-        const create = await db.query(
-          aql`
-                INSERT ${userDetails} INTO user
-                RETURN NEW
-            `,
-        );
-        const [newUser] = await create.all();
-        return newUser;
-      }
+      console.log('user:', user);
+
+      return user;
+
+      // if (user) return user;
+      // if (!user) {
+      //   const create = await db.query(
+      //     aql`
+      //           INSERT ${userDetails} INTO user
+      //           RETURN NEW
+      //       `,
+      //   );
+      //   const [newUser] = await create.all();
+      //   return newUser;
+      // }
 
     } catch (err){
       throw new Error(err);
     }
   },
 
+
+  async createTransaction(transaction) {
+    console.log('transaction:', transaction);
+    try {
+      const create = await db.query(
+        aql`
+        UPSERT  { transactionId: ${transaction.transactionId}  }
+        INSERT ${transaction} 
+        UPDATE {}
+        INTO transaction
+        RETURN NEW
+          `,
+      );
+
+      const [newTransaction] = await create.all();
+      console.log('newTransaction:', newTransaction);
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };
