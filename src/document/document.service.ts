@@ -8,26 +8,24 @@ import { getDataFromPDF } from './services/tabula.service';
 import { MpesaTransactions } from './services/mpesa/transactions.service';
 import { OriginUser } from './services/mpesa/originUser';
 import { client } from '../search/auth';
+import { toExcel } from './export/toExcel';
+
 @Injectable()
 export class DocumentService {
   async onModuleInit() {
-
-    // await client.indices.create({ index:'account' });
-    // await client.indices.create({ index:'account' });
-    // await client.indices.create({ index:'transaction' });
-
-
+    // console.log('start');
     // this.mpesaStatements();
 
-    // console.log('start');
-    const val = await getDataFromPDF('./input/MPESA_Statement_20220101_to_20220131_254722522382.pdf', '13319712', 'all');
+
+    const val = await getDataFromPDF('./input/MPESA_Statement_20220101_to_20220131_254722522382.pdf', '13319712', '1');
+    
+    
+    toExcel(val);
     // console.log('val:', val);
 
-    // console.log('what');
-    const originUser = await OriginUser(val);
-    // console.log('originUser:', originUser);
-    // console.log('originUser:', originUser);
-    await MpesaTransactions(originUser, val.transactions);
+    // const originUser = await OriginUser(val);
+
+    // await MpesaTransactions(originUser, val.transactions);
   }
 
   async mpesaStatements() {
