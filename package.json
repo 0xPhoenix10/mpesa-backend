@@ -37,6 +37,7 @@
     "date-fns": "^2.28.0",
     "eslint-config-airbnb-typescript": "^16.1.1",
     "eslint-plugin-import": "^2.25.4",
+    "google-spreadsheet": "^3.2.0",
     "graphql-type-json": "^0.3.2",
     "imap-simple": "^5.1.0",
     "libphonenumber-js": "^1.9.49",
@@ -49,7 +50,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "tabula-js": "^1.0.1"
+    "tabula-js": "^1.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
