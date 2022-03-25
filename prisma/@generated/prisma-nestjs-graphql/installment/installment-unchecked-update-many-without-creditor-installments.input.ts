@@ -30,6 +30,9 @@ export class InstallmentUncheckedUpdateManyWithoutCreditorInstallmentsInput {
     @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
     amount?: FloatFieldUpdateOperationsInput;
 
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    paidAmount?: FloatFieldUpdateOperationsInput;
+
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     debtorId?: NullableStringFieldUpdateOperationsInput;
 

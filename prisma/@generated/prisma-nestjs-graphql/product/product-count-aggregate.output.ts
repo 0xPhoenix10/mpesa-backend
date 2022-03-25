@@ -30,6 +30,9 @@ export class ProductCountAggregate {
     unitPrice!: number;
 
     @Field(() => Int, {nullable:false})
+    listedPublic!: number;
+
+    @Field(() => Int, {nullable:false})
     description!: number;
 
     @Field(() => Int, {nullable:false})

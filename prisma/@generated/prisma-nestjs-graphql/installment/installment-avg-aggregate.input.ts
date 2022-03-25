@@ -11,6 +11,9 @@ export class InstallmentAvgAggregateInput {
     amount?: true;
 
     @Field(() => Boolean, {nullable:true})
+    paidAmount?: true;
+
+    @Field(() => Boolean, {nullable:true})
     amountWithPenalty?: true;
 
     @Field(() => Boolean, {nullable:true})

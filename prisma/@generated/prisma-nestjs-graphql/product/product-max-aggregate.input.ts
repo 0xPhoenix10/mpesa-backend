@@ -29,6 +29,9 @@ export class ProductMaxAggregateInput {
     unitPrice?: true;
 
     @Field(() => Boolean, {nullable:true})
+    listedPublic?: true;
+
+    @Field(() => Boolean, {nullable:true})
     description?: true;
 
     @Field(() => Boolean, {nullable:true})

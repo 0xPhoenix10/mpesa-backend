@@ -16,6 +16,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "docker": "yarn copyPrismaOrigin && yarn prisma generate && docker compose -f ./docker/docker-compose.yml up document",
+    "docker:neo": "docker compose -f ./docker/docker-compose-neo.yml up",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -25,6 +26,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-textract": "^3.53.0",
+    "@elastic/elasticsearch": "^8.1.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/graphql": "^10.0.6",
@@ -38,6 +40,7 @@
     "graphql-type-json": "^0.3.2",
     "imap-simple": "^5.1.0",
     "libphonenumber-js": "^1.9.49",
+    "neo4j-driver": "^4.4.4",
     "pdf-to-base64": "^1.0.3",
     "pdf2json": "^2.0.0",
     "pdf2table": "^0.0.2",

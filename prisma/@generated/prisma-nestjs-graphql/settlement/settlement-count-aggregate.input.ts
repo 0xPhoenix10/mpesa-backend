@@ -29,13 +29,16 @@ export class SettlementCountAggregateInput {
     phoneNumber?: true;
 
     @Field(() => Boolean, {nullable:true})
+    tillNumber?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    paybillNumber?: true;
+
+    @Field(() => Boolean, {nullable:true})
     verified?: true;
 
     @Field(() => Boolean, {nullable:true})
     verifiedByUser?: true;
-
-    @Field(() => Boolean, {nullable:true})
-    paybill?: true;
 
     @Field(() => Boolean, {nullable:true})
     createdAt?: true;

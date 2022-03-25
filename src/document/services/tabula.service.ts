@@ -3,16 +3,19 @@ import { Tabula } from 'src/helpers/lib/tabula';
 import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
 import { findPhoneNumbersInText } from 'libphonenumber-js';
-import { TransactionType } from '../type/transaction.type';
+// import { nodeLabels } from '../type/nodeLabel.enum';
 import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
+import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
+import { textToLabels } from '../../textToLabel/textInput';
+import { NodeLabel } from '../type/nodeLabel.enum';
 
 const knownSummaryItems = [
-  { field: 'SEND MONEY:', name: 'sendMoneyIn' },
-  { field: 'RECEIVED MONEY:', name: 'recieveMoneyIn' },
-  { field: 'AGENT DEPOSIT:', name: 'AgentDepositIn' },
-  { field: 'AGENT WITHDRAWAL:', name: 'AgentWithdrawalOut' },
-  { field: 'LIPA NA M-PESA (BUY GOODS):', name: 'goodsOut' },
-  { field: 'OTHERS:', name: 'otherOut' },
+  { field: 'SEND MONEY:', name: 'sendMoney' },
+  { field: 'RECEIVED MONEY:', name: 'recieveMoney' },
+  { field: 'AGENT DEPOSIT:', name: 'AgentDeposit' },
+  { field: 'AGENT WITHDRAWAL:', name: 'AgentWithdrawalt' },
+  { field: 'LIPA NA M-PESA (BUY GOODS):', name: 'goods' },
+  { field: 'OTHERS:', name: 'other' },
   { field: 'TOTAL:', name: 'totalTransactions' },
 ];
 
@@ -76,23 +79,6 @@ const knownUserItems = [
   },
 ];
 
-function formatHiddenPhoneNumber(item) {
-  const deconstruct = item.split('-')[1].trim().replaceAll('\'', '');
-  const split = deconstruct.split(' ');
-  const [phoneNumberSecret, ...name] = split;
-  const fullName = name.join(' ');
-  const firstName = name[0];
-  const lastName = name.slice(1).join(' ');
-  return { firstName, lastName, fullName, phoneNumberSecret };
-}
-
-function foundPhoneNumber(phoneNumber, item) {
-  const deconstruct = item.replaceAll(phoneNumber.replace('+', ''), '').split('-');
-  const [text, ...name] = deconstruct;
-  const fullName = name.join(' ');
-  const [firstName, ...lastName] = name[0].trim().split(' ');
-  return { firstName, lastName: lastName.join(' '), fullName: fullName.trim(), phoneNumber };
-}
 
 
 export const getDataFromPDF = async (file: string, password: string, pages: '1' | 'all') => {
@@ -101,6 +87,7 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
   const transactions = [];
   const summary = {};
   const user = { documentId: password };
+
   for (const page of tableData.table) {
     for (const row of page.data) {
       const textFirstItem = row[0]?.text;
@@ -109,7 +96,6 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
       // summary
       //
       knownSummaryItems.forEach(item => {
-
         if (textFirstItem === item.field) {
           summary[item.name] = {
             in: row[1]?.text ? parseFloat(row[1]?.text.replaceAll(',', '')) : null,
@@ -122,42 +108,46 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
         {
           field: 'Funds received from',
           name: 'from',
-          value: (item) => {
-            const findPhone = findPhoneNumbersInText(item, 'KE');
-            if (findPhone[0]?.number?.number) {
-              return { ...foundPhoneNumber(findPhone[0]?.number?.number, item), transactionType: TransactionType.USER };
-            }
-            if (item.includes('******')) {
-              return { ...formatHiddenPhoneNumber(item), transactionType: TransactionType.USER };
-            }
+          label: NodeLabel.USER,
+          value: (item): DescriptionDeconstructionUser => {
+            return textToLabels(item, NodeLabel.USER);
           },
         },
         {
           field: 'Customer Transfer to',
           name: 'to',
-          value: (item) => {
-            const findPhone = findPhoneNumbersInText(item, 'KE');
-            if (findPhone[0]?.number?.number) {
-              return { ...foundPhoneNumber(findPhone[0]?.number?.number, item), transactionType: TransactionType.USER };
-            }
-
-            if (item.includes('******')) {
-              return { ...formatHiddenPhoneNumber(item), transactionType: TransactionType.USER };
-            }
+          label: NodeLabel.USER,
+          value: (item): DescriptionDeconstructionUser =>  {
+            return textToLabels(item, NodeLabel.USER);
           },
         },
         {
           field: 'Customer Payment to',
           name: 'to',
-          value: (item) => {
-            const findPhone = findPhoneNumbersInText(item, 'KE');
-            if (findPhone[0]?.number?.number) {
-              return { ...foundPhoneNumber(findPhone[0]?.number?.number, item), transactionType: TransactionType.USER };
-            }
+          label: NodeLabel.USER,
+          value: (item) : DescriptionDeconstructionUser => {
+            return textToLabels(item, NodeLabel.USER);
           },
         },
+        {
+          field: 'Business Payment from',
+          name: 'from',
+          label: NodeLabel.ACCOUNT,
+          value: (item) : DescriptionDeconstructionUser => {
+            return textToLabels(item, NodeLabel.ACCOUNT);
+          },
+        },
+        {
+          field: 'Merchant Payment Online to',
+          name: 'to',
+          label: NodeLabel.ACCOUNT,
+          value: (item) => {
+            return textToLabels(item, NodeLabel.ACCOUNT );
+          },
 
+        },
       ];
+ 
 
       //
       // transactions details
@@ -166,38 +156,36 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
 
         const transactionsDetails = row[2]?.text.replaceAll('\r', ' ').replace(/ +(?= )/g, '');
 
-        let transactionLinkItem = null;
+        let node = null;
         transactionsTypes.forEach(item => {
           if (transactionsDetails.includes(item.field)) {
-            transactionLinkItem = { direction: item.name, values: item.value(transactionsDetails) };
-          }
+            node = { direction: item.name, values: item.value(transactionsDetails), label: item.label };
+          } 
         });
-
 
         const amountIn = row[4]?.text ? parseFloat(row[4]?.text.replaceAll(',', '')) : null;
         const  amountOut = row[5]?.text ? Math.abs(parseFloat(row[5]?.text.replaceAll(',', ''))) : null;
         const amount = amountIn || amountOut;
-
-        transactions.push({
-          transactionId: row[0]?.text,
-          createdAt: new Date(row[1]?.text),
-          description: transactionsDetails,
-          transactionLinkItem,
-          status: row[3]?.text,
-          in: amountIn,
-          out: amountOut,
-          currency: CurrencyEnum.KES,
-          method: TransactionMethodEnum.MPESA,
-          amount: amount,
-          balanceAfter: row[6]?.text ? parseFloat(row[6]?.text.replaceAll(',', '')) : null,
-        });
+        
+        const get = { 
+          transaction: {
+            mpesaTransactionId: row[0]?.text,
+            createdAt: new Date(row[1]?.text).toString(),
+            description: transactionsDetails,
+            status: row[3]?.text,
+            in: amountIn,
+            out: amountOut,
+            currency: CurrencyEnum.KES,
+            method: TransactionMethodEnum.MPESA,
+            amount: amount,
+            balanceAfter: row[6]?.text ? parseFloat(row[6]?.text.replaceAll(',', '')) : null,
+          }, 
+          node,
+        };
+        transactions.push(get);
       }
-
     }
-
   }
-
-
 
   //
   // Personal data
@@ -214,11 +202,6 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
     });
 
   }
-
-
-  // 
-  // stats
-  //
 
   return { user, summary, transactions };
 };

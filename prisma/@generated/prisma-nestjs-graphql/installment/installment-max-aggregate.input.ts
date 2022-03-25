@@ -23,6 +23,9 @@ export class InstallmentMaxAggregateInput {
     amount?: true;
 
     @Field(() => Boolean, {nullable:true})
+    paidAmount?: true;
+
+    @Field(() => Boolean, {nullable:true})
     debtorId?: true;
 
     @Field(() => Boolean, {nullable:true})

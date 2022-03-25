@@ -30,6 +30,9 @@ export class InstallmentUncheckedUpdateWithoutDebtorInput {
     @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
     amount?: FloatFieldUpdateOperationsInput;
 
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    paidAmount?: FloatFieldUpdateOperationsInput;
+
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     creditorId?: NullableStringFieldUpdateOperationsInput;
 

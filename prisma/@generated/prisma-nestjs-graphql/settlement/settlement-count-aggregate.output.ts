@@ -30,13 +30,16 @@ export class SettlementCountAggregate {
     phoneNumber!: number;
 
     @Field(() => Int, {nullable:false})
+    tillNumber!: number;
+
+    @Field(() => Int, {nullable:false})
+    paybillNumber!: number;
+
+    @Field(() => Int, {nullable:false})
     verified!: number;
 
     @Field(() => Int, {nullable:false})
     verifiedByUser!: number;
-
-    @Field(() => Int, {nullable:false})
-    paybill!: number;
 
     @Field(() => Int, {nullable:false})
     createdAt!: number;

@@ -13,6 +13,9 @@ export class InstallmentSumAggregate {
     amount?: number;
 
     @Field(() => Float, {nullable:true})
+    paidAmount?: number;
+
+    @Field(() => Float, {nullable:true})
     amountWithPenalty?: number;
 
     @Field(() => Float, {nullable:true})

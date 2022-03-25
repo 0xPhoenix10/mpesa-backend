@@ -31,6 +31,9 @@ export class InstallmentCreateWithoutOrderInput {
     @Field(() => Float, {nullable:false})
     amount!: number;
 
+    @Field(() => Float, {nullable:true})
+    paidAmount?: number;
+
     @Field(() => installmentStatusTypeEnum, {nullable:true})
     status?: keyof typeof installmentStatusTypeEnum;
 

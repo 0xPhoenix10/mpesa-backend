@@ -24,6 +24,9 @@ export class InstallmentCountOrderByAggregateInput {
     amount?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    paidAmount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     debtorId?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

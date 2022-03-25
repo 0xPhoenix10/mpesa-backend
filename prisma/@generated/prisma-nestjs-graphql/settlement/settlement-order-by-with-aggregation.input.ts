@@ -33,13 +33,16 @@ export class SettlementOrderByWithAggregationInput {
     phoneNumber?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    tillNumber?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    paybillNumber?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     verified?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     verifiedByUser?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    paybill?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
     createdAt?: keyof typeof SortOrder;

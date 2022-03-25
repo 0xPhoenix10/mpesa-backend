@@ -24,6 +24,9 @@ export class InstallmentCountAggregate {
     amount!: number;
 
     @Field(() => Int, {nullable:false})
+    paidAmount!: number;
+
+    @Field(() => Int, {nullable:false})
     debtorId!: number;
 
     @Field(() => Int, {nullable:false})

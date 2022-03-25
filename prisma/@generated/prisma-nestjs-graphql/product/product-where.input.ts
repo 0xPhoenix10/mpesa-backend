@@ -4,6 +4,7 @@ import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { FloatNullableFilter } from '../prisma/float-nullable-filter.input';
+import { BoolNullableFilter } from '../prisma/bool-nullable-filter.input';
 import { JsonNullableFilter } from '../prisma/json-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { EnumCurrencyEnumNullableFilter } from '../prisma/enum-currency-enum-nullable-filter.input';
@@ -46,6 +47,9 @@ export class ProductWhereInput {
 
     @Field(() => FloatNullableFilter, {nullable:true})
     unitPrice?: FloatNullableFilter;
+
+    @Field(() => BoolNullableFilter, {nullable:true})
+    listedPublic?: BoolNullableFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
     description?: StringNullableFilter;

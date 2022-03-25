@@ -33,6 +33,9 @@ export class ProductUncheckedCreateInput {
     @Field(() => Float, {nullable:true})
     unitPrice?: number;
 
+    @Field(() => Boolean, {nullable:true})
+    listedPublic?: boolean;
+
     @Field(() => String, {nullable:true})
     description?: string;
 

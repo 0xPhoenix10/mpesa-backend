@@ -46,14 +46,17 @@ export class SettlementWhereInput {
     @Field(() => StringNullableFilter, {nullable:true})
     phoneNumber?: StringNullableFilter;
 
+    @Field(() => StringNullableFilter, {nullable:true})
+    tillNumber?: StringNullableFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    paybillNumber?: StringNullableFilter;
+
     @Field(() => BoolNullableFilter, {nullable:true})
     verified?: BoolNullableFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
     verifiedByUser?: StringNullableFilter;
-
-    @Field(() => StringNullableFilter, {nullable:true})
-    paybill?: StringNullableFilter;
 
     @Field(() => DateTimeFilter, {nullable:true})
     createdAt?: DateTimeFilter;

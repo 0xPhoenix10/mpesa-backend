@@ -44,6 +44,9 @@ export class InstallmentWhereInput {
     @Field(() => FloatFilter, {nullable:true})
     amount?: FloatFilter;
 
+    @Field(() => FloatFilter, {nullable:true})
+    paidAmount?: FloatFilter;
+
     @Field(() => StringNullableFilter, {nullable:true})
     debtorId?: StringNullableFilter;
 

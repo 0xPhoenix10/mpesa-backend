@@ -35,11 +35,14 @@ export class SettlementUpdateInput {
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
     phoneNumber?: NullableStringFieldUpdateOperationsInput;
 
-    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
-    verified?: NullableBoolFieldUpdateOperationsInput;
+    @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
+    tillNumber?: NullableStringFieldUpdateOperationsInput;
 
     @Field(() => NullableStringFieldUpdateOperationsInput, {nullable:true})
-    paybill?: NullableStringFieldUpdateOperationsInput;
+    paybillNumber?: NullableStringFieldUpdateOperationsInput;
+
+    @Field(() => NullableBoolFieldUpdateOperationsInput, {nullable:true})
+    verified?: NullableBoolFieldUpdateOperationsInput;
 
     @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
     createdAt?: DateTimeFieldUpdateOperationsInput;
