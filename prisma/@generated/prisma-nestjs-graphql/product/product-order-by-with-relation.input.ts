@@ -32,6 +32,9 @@ export class ProductOrderByWithRelationInput {
     unitPrice?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    listedPublic?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     description?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

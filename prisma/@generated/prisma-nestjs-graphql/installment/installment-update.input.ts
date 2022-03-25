@@ -36,6 +36,9 @@ export class InstallmentUpdateInput {
     @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
     amount?: FloatFieldUpdateOperationsInput;
 
+    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
+    paidAmount?: FloatFieldUpdateOperationsInput;
+
     @Field(() => NullableEnuminstallmentStatusTypeEnumFieldUpdateOperationsInput, {nullable:true})
     status?: NullableEnuminstallmentStatusTypeEnumFieldUpdateOperationsInput;
 

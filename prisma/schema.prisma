@@ -199,8 +199,8 @@ model Transaction {
   paymentType     PaymentTypesEnum       @map("payment_type")
   paymentTypeId   String?                @map("payment_type_id")
   currency        CurrencyEnum           @default(KES)
-  transactionType TransactionTypeEnum?   @map("transaction_type") //
-  method          TransactionMethodEnum? // 
+  transactionType TransactionTypeEnum?   @map("transaction_type")
+  method          TransactionMethodEnum?
   walletId        String?                @map("wallet_id")
   createdAt       DateTime               @default(now()) @map("created_at")
   name            String?
@@ -220,6 +220,7 @@ model Product {
   name              String?
   price             Float?
   unitPrice         Float?                 @map("unit_price")
+  listedPublic      Boolean?               @map("listed_public")
   description       String?
   gallery           Json?
   categories        Json?
@@ -368,6 +369,7 @@ model Installment {
   endDate               DateTime?                  @map("end_date")
   referenceNumber       String?                    @map("referance_number")
   amount                Float
+  paidAmount                Float   @default(0) @map("paid_amount")
   debtorId              String?                    @map("debtor_id")
   creditorId            String?                    @map("creditor_id")
   orderId               String?                    @map("order_id")
@@ -566,9 +568,10 @@ model Settlement {
   bankBranch         String?               @map("bank_branch")
   bankName           String?               @map("bank_name")
   phoneNumber        String?               @map("phone_number")
+  tillNumber        String?                @map("till_number")
+  paybillNumber        String?             @map("paybill_number")
   verified           Boolean?
   verifiedByUser     String?               @map("verified_by_user")
-  paybill            String?
   createdAt          DateTime              @default(now()) @map("created_at")
   createdBy          String                @map("created_by")
   createdByAgent     Boolean               @map("created_by_agent")
@@ -1441,6 +1444,7 @@ enum installmentStatusTypeEnum {
   PAID
   DEFAULTED
   LATE_PAID
+  PARTIALLY_PAID
 }
 
 enum ActivityEntityType {

@@ -26,6 +26,9 @@ export class InstallmentMinAggregate {
     @Field(() => Float, {nullable:true})
     amount?: number;
 
+    @Field(() => Float, {nullable:true})
+    paidAmount?: number;
+
     @Field(() => String, {nullable:true})
     debtorId?: string;
 

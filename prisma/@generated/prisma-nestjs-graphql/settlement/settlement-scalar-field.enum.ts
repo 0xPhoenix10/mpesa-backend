@@ -9,9 +9,10 @@ export enum SettlementScalarFieldEnum {
     bankBranch = "bankBranch",
     bankName = "bankName",
     phoneNumber = "phoneNumber",
+    tillNumber = "tillNumber",
+    paybillNumber = "paybillNumber",
     verified = "verified",
     verifiedByUser = "verifiedByUser",
-    paybill = "paybill",
     createdAt = "createdAt",
     createdBy = "createdBy",
     createdByAgent = "createdByAgent"

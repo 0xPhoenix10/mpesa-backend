@@ -5,7 +5,8 @@ export enum installmentStatusTypeEnum {
     LATE = "LATE",
     PAID = "PAID",
     DEFAULTED = "DEFAULTED",
-    LATE_PAID = "LATE_PAID"
+    LATE_PAID = "LATE_PAID",
+    PARTIALLY_PAID = "PARTIALLY_PAID"
 }
 
 

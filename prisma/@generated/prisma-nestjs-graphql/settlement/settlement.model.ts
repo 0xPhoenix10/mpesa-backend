@@ -33,14 +33,17 @@ export class Settlement {
     @Field(() => String, {nullable:true})
     phoneNumber!: string | null;
 
+    @Field(() => String, {nullable:true})
+    tillNumber!: string | null;
+
+    @Field(() => String, {nullable:true})
+    paybillNumber!: string | null;
+
     @Field(() => Boolean, {nullable:true})
     verified!: boolean | null;
 
     @Field(() => String, {nullable:true})
     verifiedByUser!: string | null;
-
-    @Field(() => String, {nullable:true})
-    paybill!: string | null;
 
     @Field(() => Date, {nullable:false})
     createdAt!: Date;

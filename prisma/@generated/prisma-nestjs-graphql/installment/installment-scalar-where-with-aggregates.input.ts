@@ -39,6 +39,9 @@ export class InstallmentScalarWhereWithAggregatesInput {
     @Field(() => FloatWithAggregatesFilter, {nullable:true})
     amount?: FloatWithAggregatesFilter;
 
+    @Field(() => FloatWithAggregatesFilter, {nullable:true})
+    paidAmount?: FloatWithAggregatesFilter;
+
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
     debtorId?: StringNullableWithAggregatesFilter;
 

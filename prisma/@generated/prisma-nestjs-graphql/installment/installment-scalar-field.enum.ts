@@ -7,6 +7,7 @@ export enum InstallmentScalarFieldEnum {
     endDate = "endDate",
     referenceNumber = "referenceNumber",
     amount = "amount",
+    paidAmount = "paidAmount",
     debtorId = "debtorId",
     creditorId = "creditorId",
     orderId = "orderId",

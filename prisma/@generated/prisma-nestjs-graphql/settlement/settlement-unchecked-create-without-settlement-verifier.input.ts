@@ -30,11 +30,14 @@ export class SettlementUncheckedCreateWithoutSettlementVerifierInput {
     @Field(() => String, {nullable:true})
     phoneNumber?: string;
 
-    @Field(() => Boolean, {nullable:true})
-    verified?: boolean;
+    @Field(() => String, {nullable:true})
+    tillNumber?: string;
 
     @Field(() => String, {nullable:true})
-    paybill?: string;
+    paybillNumber?: string;
+
+    @Field(() => Boolean, {nullable:true})
+    verified?: boolean;
 
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;

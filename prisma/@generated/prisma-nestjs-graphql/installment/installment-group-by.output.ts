@@ -31,6 +31,9 @@ export class InstallmentGroupBy {
     @Field(() => Float, {nullable:false})
     amount!: number;
 
+    @Field(() => Float, {nullable:false})
+    paidAmount!: number;
+
     @Field(() => String, {nullable:true})
     debtorId?: string;
 

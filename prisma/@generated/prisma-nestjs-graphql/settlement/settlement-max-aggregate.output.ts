@@ -29,14 +29,17 @@ export class SettlementMaxAggregate {
     @Field(() => String, {nullable:true})
     phoneNumber?: string;
 
+    @Field(() => String, {nullable:true})
+    tillNumber?: string;
+
+    @Field(() => String, {nullable:true})
+    paybillNumber?: string;
+
     @Field(() => Boolean, {nullable:true})
     verified?: boolean;
 
     @Field(() => String, {nullable:true})
     verifiedByUser?: string;
-
-    @Field(() => String, {nullable:true})
-    paybill?: string;
 
     @Field(() => Date, {nullable:true})
     createdAt?: Date | string;

@@ -32,6 +32,9 @@ export class Installment {
     @Field(() => Float, {nullable:false})
     amount!: number;
 
+    @Field(() => Float, {nullable:false,defaultValue:0})
+    paidAmount!: number;
+
     @Field(() => String, {nullable:true})
     debtorId!: string | null;
 

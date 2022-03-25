@@ -26,6 +26,9 @@ export class InstallmentCreateManyCreditConfigurationInput {
     @Field(() => Float, {nullable:false})
     amount!: number;
 
+    @Field(() => Float, {nullable:true})
+    paidAmount?: number;
+
     @Field(() => String, {nullable:true})
     debtorId?: string;
 
