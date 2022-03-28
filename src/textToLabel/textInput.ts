@@ -7,9 +7,8 @@ function formatHiddenPhoneNumber(item) {
   const split = deconstruct.split(' ');
   const [phoneNumberSecret, ...fullName] = split;
   const name = fullName.join(' ');
-  const firstName = name[0];
-  const lastName = name.slice(1).join(' ');
-  return { firstName, lastName, name, mpesa: { phoneNumberSecret } };
+  const [firstName, ...lastName] = fullName;
+  return { firstName, lastName: lastName.join(' '), name, mpesa: { phoneNumberSecret } };
 }
 
 function foundPhoneNumber(phoneNumber, item) {

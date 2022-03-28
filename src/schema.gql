@@ -1,0 +1,18 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input DocumentInput {
+  documentType: String
+  fileName: String
+  key: String!
+  password: String!
+}
+
+type Mutation {
+  documentAnalyse(input: DocumentInput!): String!
+}
+
+type Query {
+  sayHello: String!
+}
