@@ -81,9 +81,9 @@ const knownUserItems = [
 
 
 
-export const getDataFromPDF = async (file: string, password: string, pages: '1' | 'all') => {
+export const getDataFromPDF = async (file: string, password: string, pages: '1' | '2' | 'all') => {
   const tableData = await Tabula(file, password, pages);
-
+  if (!tableData) throw new Error('can not get the table data');
   const transactions = [];
   const summary = {};
   const user = { documentId: password };
