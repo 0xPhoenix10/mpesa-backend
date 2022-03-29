@@ -13,7 +13,7 @@ on:
   pull_request:
     branches: [production]
 
-name: Node Project `exodus` CI on ECR
+name: Node Project `Leviticus` CI on ECR
 
 jobs:
   deploy:
@@ -59,14 +59,14 @@ jobs:
 
       - name: Download task definition
         run: |
-          aws ecs describe-task-definition --task-definition leviticus-default --query taskDefinition > task-definition.json
+          aws ecs describe-task-definition --task-definition leviticus --query taskDefinition > task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: leviticus-default
+          container-name: leviticus
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
