@@ -8,14 +8,7 @@ import { CrackPassword } from './services/crackPassword.service';
 import { getDataFromPDF } from './services/tabula.service';
 import { MpesaTransactions } from './services/mpesa/transactions.service';
 import { OriginUser } from './services/mpesa/originUser';
-// import { client } from '../search/auth';
-import { DocumentInput } from './type/document.input';
-import { s3 } from '../partners/authAWS';
-import { Readable } from 'stream';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'; // ES Modules import
-// const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3"); // CommonJS import
-// const { S3RequestPresigner } = require("@aws-sdk/s3-request-presigner");
-// import { getSignedUrl } from '@aws-sdk/s3-request-presigner'; 
 @Injectable()
 export class DocumentService {
   async onModuleInit() {
@@ -36,53 +29,7 @@ export class DocumentService {
 
     // this.getDocumentDetails({ password: '24564409-1877', key:'locked/1.pdf', fileName: '1.pdf' });
   }
-  
-  async getDocumentDetailsS3(input:DocumentInput ) {
-    try {
-      const params = {
-        Bucket: 'sevi-external-financial-statements', 
-        Key: input.key,
-      };
 
-      // working 1
-
-      const region = 'eu-central-1';
-      const client = new S3Client({  
-        credentials:{
-          secretAccessKey: 'MFotbypr03ZQWQb8tcuvaXYAxc6k6sqeceWpeIu9',
-          accessKeyId: 'AKIAYAMMCWGLL6V6DXKV',
-        },
-        region });
-
-      const command = new GetObjectCommand(params);
-      const response = await client.send(command);
-      const stream = response.Body as Readable;
-
-      const val =  await new Promise<Buffer>((resolve, reject) => {
-        const chunks: Buffer[] = [];
-        stream.on('data', chunk => chunks.push(chunk));
-        stream.once('end', () => {
-          console.log('done upload');
-          resolve(Buffer.concat(chunks));
-        });
-        stream.once('error', reject);
-      });
-
-      // console.log('before');
-      await fs.writeFile(`./output/${input.fileName}`, val, function (err) {
-        if (err) {
-          console.log('There has been an error saving your configuration data.');
-          console.log(err.message);
-          return;
-        }
-        // console.log('Configuration saved successfully.');
-
-      });
-
-      // console.log('after');
-
-    } catch (err){throw new Error(err);}
-  }
 
   async mpesaStatements() {
     try {

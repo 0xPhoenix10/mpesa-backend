@@ -14,12 +14,12 @@ export class DocumentResolver {
     return 'Hello World!';
   }
 
-  @Mutation(() => String)
-  documentAnalyse(
-    @Args('input') input: DocumentInput,
-  ): Promise<string | any> {
-    return this.documentService.getDocumentDetailsS3(input);
-  }
+  // @Mutation(() => String)
+  // documentAnalyse(
+  //   @Args('input') input: DocumentInput,
+  // ): Promise<string | any> {
+  //   // return this.documentService.getDocumentDetailsS3(input);
+  // }
 
  
 }
