@@ -27,7 +27,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/src/translate ./src/translate
+# COPY --from=builder /app/src/translate ./src/translate
 
 RUN apt-get update
 RUN apt-get install -y openssl
