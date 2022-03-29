@@ -10,6 +10,7 @@ export const toExcel = async (data, path)=> {
 
   const userDetails =  [flattenObject(data.user)];
 
+  
 
   const workSheet = XLSX.utils.json_to_sheet(transaction);
   const summary =  XLSX.utils.json_to_sheet(summaryDetails);
