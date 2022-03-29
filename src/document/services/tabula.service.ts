@@ -1,9 +1,6 @@
 import { Tabula } from 'src/helpers/lib/tabula';
-// import differenceInDays from 'date-fns/differenceInDays'
 import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
-import { findPhoneNumbersInText } from 'libphonenumber-js';
-// import { nodeLabels } from '../type/nodeLabel.enum';
 import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
 import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
 import { textToLabels } from '../../textToLabel/textInput';

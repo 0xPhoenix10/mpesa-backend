@@ -36,22 +36,15 @@ export class DocumentService {
 
     // this.getDocumentDetails({ password: '24564409-1877', key:'locked/1.pdf', fileName: '1.pdf' });
   }
-
-
+  
   async getDocumentDetailsS3(input:DocumentInput ) {
-    // return download link
-
     try {
       const params = {
         Bucket: 'sevi-external-financial-statements', 
         Key: input.key,
       };
 
-
       // working 1
-
-      // const pr = await s3.getSignedUrlPromise('getObject', params);
-      // console.log('pr:', pr);
 
       const region = 'eu-central-1';
       const client = new S3Client({  
@@ -75,18 +68,18 @@ export class DocumentService {
         stream.once('error', reject);
       });
 
-      console.log('before');
+      // console.log('before');
       await fs.writeFile(`./output/${input.fileName}`, val, function (err) {
         if (err) {
           console.log('There has been an error saving your configuration data.');
           console.log(err.message);
           return;
         }
-        console.log('Configuration saved successfully.');
+        // console.log('Configuration saved successfully.');
 
       });
 
-      console.log('after');
+      // console.log('after');
 
     } catch (err){throw new Error(err);}
   }
@@ -115,11 +108,11 @@ export class DocumentService {
               // Get Passwords
               //
               const password = await CrackPassword(file, documentDetails.potentialPassword );
-              console.log('password:', password);
+              // console.log('password:', password);
 
               const val = await getDataFromPDF(`./input/${documentDetails.fileName}`, password, 'all');
               const originUser = await OriginUser(val);
-              console.log('originUser:', originUser);
+              // console.log('originUser:', originUser);
               await MpesaTransactions(originUser, val.transactions);
 
               // move statement to output folder if all above is done correctly.
