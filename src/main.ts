@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import './neo/auth';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule,  { cors: true });
+  const app = await NestFactory.create(AppModule,  { cors: false });
   const port = process.env.PORT || 7000;
   await app.listen(port);
 }
