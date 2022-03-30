@@ -36,7 +36,7 @@ export class Product {
     @Field(() => Float, {nullable:true})
     unitPrice!: number | null;
 
-    @Field(() => Boolean, {nullable:true})
+    @Field(() => Boolean, {nullable:true,defaultValue:true})
     listedPublic!: boolean | null;
 
     @Field(() => String, {nullable:true})

@@ -1,4 +1,4 @@
-import { Tabula } from 'src/helpers/lib/tabula';
+import { Tabula } from 'src/helpers/tabula';
 import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
 import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
