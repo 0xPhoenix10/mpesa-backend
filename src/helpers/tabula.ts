@@ -1,5 +1,5 @@
 const childProcess = require('child_process');
-const options = { maxBuffer: 1024 * 1024 * 100, encoding: 'utf8', timeout: 20000 };
+const options = { maxBuffer: 1024 * 1024 * 100, encoding: 'utf8', timeout: 30000 };
 
 export const Tabula = async (file = './output/test.pdf', password = '123', pages = '1') => {
   async function tableData() {
