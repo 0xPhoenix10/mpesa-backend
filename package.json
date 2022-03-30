@@ -16,6 +16,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "docker": "yarn copyPrismaOrigin && yarn prisma generate && docker compose -f ./docker/docker-compose.yml up document",
+    "docker:prod": "yarn copyPrismaOrigin && yarn prisma generate && docker compose -f ./docker/docker-compose-prod.yml up documentp",
     "docker:neo": "docker compose -f ./docker/docker-compose-neo.yml up",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
