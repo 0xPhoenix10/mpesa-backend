@@ -1,5 +1,5 @@
 export const syncToEs = {
-  createDocument() => {
-    
-  }
-}
+  createDocument() {
+    // upload
+  },
+};
