@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY ./src ./src
 COPY ./prisma ./prisma
+COPY ./lib ./lib
 COPY package.json ./
 COPY .eslintrc.js ./
 COPY nest-cli.json ./

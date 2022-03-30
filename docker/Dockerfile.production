@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY prisma ./prisma/
+COPY lib ./lib/
 COPY yarn.lock ./
 
 RUN apt-get update

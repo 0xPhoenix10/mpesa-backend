@@ -220,7 +220,7 @@ model Product {
   name              String?
   price             Float?
   unitPrice         Float?                 @map("unit_price")
-  listedPublic      Boolean?               @map("listed_public")
+  listedPublic      Boolean?               @default(true) @map("listed_public")
   description       String?
   gallery           Json?
   categories        Json?
@@ -289,6 +289,16 @@ model Billing {
   order       Order[]
 
   @@map("billing")
+}
+
+model BuyerContacts {
+  id          String   @id @default(uuid())
+  walletId    String   @map("wallet_id")
+  name        String   @map("name")
+  phoneNumber String   @map("phone_number")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("buyer_contacts")
 }
 
 model Shipping {
@@ -369,7 +379,7 @@ model Installment {
   endDate               DateTime?                  @map("end_date")
   referenceNumber       String?                    @map("referance_number")
   amount                Float
-  paidAmount                Float   @default(0) @map("paid_amount")
+  paidAmount            Float                      @default(0) @map("paid_amount")
   debtorId              String?                    @map("debtor_id")
   creditorId            String?                    @map("creditor_id")
   orderId               String?                    @map("order_id")
@@ -568,8 +578,8 @@ model Settlement {
   bankBranch         String?               @map("bank_branch")
   bankName           String?               @map("bank_name")
   phoneNumber        String?               @map("phone_number")
-  tillNumber        String?                @map("till_number")
-  paybillNumber        String?             @map("paybill_number")
+  tillNumber         String?               @map("till_number")
+  paybillNumber      String?               @map("paybill_number")
   verified           Boolean?
   verifiedByUser     String?               @map("verified_by_user")
   createdAt          DateTime              @default(now()) @map("created_at")
@@ -689,6 +699,7 @@ enum BadgeType {
   PERSONAL_SEVI_TEAM
   MPESA_STATEMENT
   BANK_STATEMENT
+  BUYER_SHARED_CONTACTS
 }
 
 enum EcommercePlatformEnum {
