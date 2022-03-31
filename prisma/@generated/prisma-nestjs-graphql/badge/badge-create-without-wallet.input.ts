@@ -20,4 +20,7 @@ export class BadgeCreateWithoutWalletInput {
 
     @Field(() => Int, {nullable:true})
     count?: number;
+
+    @Field(() => Int, {nullable:true})
+    level?: number;
 }

@@ -6,4 +6,7 @@ export class BadgeAvgAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     count?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    level?: true;
 }

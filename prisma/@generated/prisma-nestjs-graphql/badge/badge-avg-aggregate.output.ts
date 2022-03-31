@@ -7,4 +7,7 @@ export class BadgeAvgAggregate {
 
     @Field(() => Float, {nullable:true})
     count?: number;
+
+    @Field(() => Float, {nullable:true})
+    level?: number;
 }

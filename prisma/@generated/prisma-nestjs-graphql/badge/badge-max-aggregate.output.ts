@@ -23,4 +23,7 @@ export class BadgeMaxAggregate {
 
     @Field(() => Int, {nullable:true})
     count?: number;
+
+    @Field(() => Int, {nullable:true})
+    level?: number;
 }

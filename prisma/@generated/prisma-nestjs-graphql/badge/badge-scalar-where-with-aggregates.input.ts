@@ -35,4 +35,7 @@ export class BadgeScalarWhereWithAggregatesInput {
 
     @Field(() => IntNullableWithAggregatesFilter, {nullable:true})
     count?: IntNullableWithAggregatesFilter;
+
+    @Field(() => IntNullableWithAggregatesFilter, {nullable:true})
+    level?: IntNullableWithAggregatesFilter;
 }

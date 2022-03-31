@@ -24,5 +24,8 @@ export class BadgeCountAggregate {
     count!: number;
 
     @Field(() => Int, {nullable:false})
+    level!: number;
+
+    @Field(() => Int, {nullable:false})
     _all!: number;
 }

@@ -23,5 +23,8 @@ export class BadgeCountAggregateInput {
     count?: true;
 
     @Field(() => Boolean, {nullable:true})
+    level?: true;
+
+    @Field(() => Boolean, {nullable:true})
     _all?: true;
 }

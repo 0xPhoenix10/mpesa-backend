@@ -26,6 +26,9 @@ export class Badge {
     @Field(() => Int, {nullable:true,defaultValue:1})
     count!: number | null;
 
+    @Field(() => Int, {nullable:true,defaultValue:1})
+    level!: number | null;
+
     @Field(() => Wallet, {nullable:false})
     wallet?: Wallet;
 }

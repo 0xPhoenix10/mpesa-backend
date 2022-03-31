@@ -25,6 +25,9 @@ export class BadgeUpdateInput {
     @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
     count?: NullableIntFieldUpdateOperationsInput;
 
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    level?: NullableIntFieldUpdateOperationsInput;
+
     @Field(() => WalletUpdateOneRequiredWithoutBadgesInput, {nullable:true})
     wallet?: WalletUpdateOneRequiredWithoutBadgesInput;
 }

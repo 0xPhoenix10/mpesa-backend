@@ -26,4 +26,7 @@ export class BadgeUncheckedUpdateInput {
 
     @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
     count?: NullableIntFieldUpdateOperationsInput;
+
+    @Field(() => NullableIntFieldUpdateOperationsInput, {nullable:true})
+    level?: NullableIntFieldUpdateOperationsInput;
 }
