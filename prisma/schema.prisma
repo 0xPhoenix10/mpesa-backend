@@ -98,6 +98,7 @@ model Badge {
   createdAt DateTime?  @default(now()) @map("created_at")
   type      BadgeType? @map("badge_type")
   count     Int?       @default(1)
+  level     Int?       @default(1)
   wallet    Wallet     @relation("walletBadges", fields: [account], references: [account])
 
   @@map("badge")

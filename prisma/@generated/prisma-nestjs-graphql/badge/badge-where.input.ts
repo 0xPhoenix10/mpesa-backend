@@ -37,6 +37,9 @@ export class BadgeWhereInput {
     @Field(() => IntNullableFilter, {nullable:true})
     count?: IntNullableFilter;
 
+    @Field(() => IntNullableFilter, {nullable:true})
+    level?: IntNullableFilter;
+
     @Field(() => WalletRelationFilter, {nullable:true})
     wallet?: WalletRelationFilter;
 }

@@ -6,7 +6,8 @@ export enum BadgeScalarFieldEnum {
     active = "active",
     createdAt = "createdAt",
     type = "type",
-    count = "count"
+    count = "count",
+    level = "level"
 }
 
 

@@ -28,6 +28,9 @@ export class BadgeOrderByWithAggregationInput {
     @Field(() => SortOrder, {nullable:true})
     count?: keyof typeof SortOrder;
 
+    @Field(() => SortOrder, {nullable:true})
+    level?: keyof typeof SortOrder;
+
     @Field(() => BadgeCountOrderByAggregateInput, {nullable:true})
     _count?: BadgeCountOrderByAggregateInput;
 

@@ -22,6 +22,9 @@ export class BadgeCreateInput {
     @Field(() => Int, {nullable:true})
     count?: number;
 
+    @Field(() => Int, {nullable:true})
+    level?: number;
+
     @Field(() => WalletCreateNestedOneWithoutBadgesInput, {nullable:false})
     wallet!: WalletCreateNestedOneWithoutBadgesInput;
 }
