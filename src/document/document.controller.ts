@@ -4,6 +4,7 @@ import { getDataFromPDF } from './services/tabula.service';
 const fs = require('fs').promises;
 import { toExcel } from './export/toExcel';
 import { createReadStream } from 'fs';
+import { elastic } from './repositories/es.repository';
 
 @Controller('file')
 export class DocumentController {
@@ -25,6 +26,10 @@ export class DocumentController {
       // console.log('filename:', filename);
       const val: any = await getDataFromPDF(`./input/${filename}`, query.password, 'all');
       const path = `./output/${val.user.name.replaceAll(' ', '-')}.xlsx`;
+      // send records to elasticSearch 
+      elastic.multiDoc(val, 'mpesa-transactions' );
+
+      // create excel file
       await toExcel(val,  path);
       const file = createReadStream(path);
       return file.pipe(res);

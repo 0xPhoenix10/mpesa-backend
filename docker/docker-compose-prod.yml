@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  documentp:
-    container_name: documentp
+  leviticusp:
+    container_name: leviticusp
     build:
       context: ../
       dockerfile: ./docker/Dockerfile.production

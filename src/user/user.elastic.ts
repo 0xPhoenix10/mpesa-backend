@@ -1,14 +1,13 @@
 import { User } from '@prisma/client';
-import { client } from '../search/auth';
-import { SearchIndexEnum, syncToEs } from '../search/elastic.service';
+// import { SearchIndexEnum, syncToEs } from '../document/repositories/elastic.service';
 
 export const userElasticDocuments = {
   async findOrCreateUser(userDetails : Partial<User>): Promise<any> {
     console.log('userDetails:', userDetails);
 
-    const upsert = await syncToEs(userDetails, SearchIndexEnum.USER);
+    // const upsert = await syncToEs(userDetails, SearchIndexEnum.USER);
 
-    console.log('upsert:', upsert);
+    // console.log('upsert:', upsert);
 
   },
 };
