@@ -88,8 +88,12 @@ export class DocumentService {
       throw new Error(err);
     }
   }
+
 }
+
+
+
+
 function getSignedUrl(client: S3Client, command: GetObjectCommand, arg2: { expiresIn: number; }) {
   throw new Error('Function not implemented.');
 }
-
