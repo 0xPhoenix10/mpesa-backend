@@ -27,6 +27,6 @@ services:
   #     ELASTICSEARCH_URL: http://elasticsearch1:9200/
   #   networks:
   #     - shared-nw
-networks:
-  shared-nw:
-    name: shared-nw
+  # networks:
+  #   shared-nw:
+  #     name: shared-nw
