@@ -7,7 +7,7 @@ services:
       context: ../
       dockerfile: ./docker/Dockerfile.production
     ports:
-      - 8001:7000
+      - 80:7000
     # depends_on:
     #   - kibana
     # networks:
