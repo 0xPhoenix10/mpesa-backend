@@ -20,10 +20,8 @@ export class DocumentController {
 
   @Get('download/:doc') 
   async excelFile(@Query() query, @Res() res, @Param() params) {
-    // console.log('query:', query);
     try {
       const [ filename ] = params.doc.split('.');
-      // console.log('filename:', filename);
       const val: any = await getDataFromPDF(`./input/${filename}`, query.password, 'all');
       const path = `./output/${val.user.name.replaceAll(' ', '-')}.xlsx`;
       // send records to elasticSearch 

@@ -13,6 +13,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 console.log('url:', url);
+console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
+
 const ESclient = new Client({ node: url });
 
 export const elastic = {

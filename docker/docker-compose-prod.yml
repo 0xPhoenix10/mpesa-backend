@@ -8,8 +8,6 @@ services:
       dockerfile: ./docker/Dockerfile.production
     ports:
       - 8001:7000
-      # networks:
-      #   - shared-nw
     env_file:
       - ../.env.production
     volumes:
@@ -17,14 +15,3 @@ services:
       - ../prisma:/app/prisma:cached
       - ../input:/app/input:cached
       - ../output:/app/output:cached
-  # kibana:
-  #   container_name: kibana
-  #   image: docker.elastic.co/kibana/kibana:8.1.0
-  #   environment:
-  #     SERVER_NAME: localhost
-  #     ELASTICSEARCH_URL: http://elasticsearch1:9200/
-  #   networks:
-  #     - shared-nw
-  # networks:
-  #   shared-nw:
-  #     name: shared-nw
