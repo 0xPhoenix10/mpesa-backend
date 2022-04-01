@@ -7,7 +7,17 @@ services:
       context: ../
       dockerfile: ./docker/Dockerfile.production
     ports:
+<<<<<<< HEAD
       - 80:7000
+=======
+      - 8001:7000
+    environment:
+      - ELASTIC_PASSWORD=e0F5Ekp9uDHTqBjl0HeinesJ
+      - ELASTIC_URL=https://d80c9609865141c58768f3a8590d096e.eu-central-1.aws.cloud.es.io:9243
+      - ELASTIC_USERNAME=elastic
+      - USERNAME_NEO = neo4j
+      - PASSWORD_NEO = E_2a6xQywP75I9GbLWGbkPIrLSFZ_0GjSkci0EgZ5h4
+>>>>>>> 1e60f41f52ba2c44e858f8fd459a47e8b8efa2a8
     # depends_on:
     #   - kibana
     # networks:
