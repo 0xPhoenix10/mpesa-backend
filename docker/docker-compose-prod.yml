@@ -10,8 +10,8 @@ services:
       - 8001:7000
     # depends_on:
     #   - kibana
-    networks:
-      - shared-nw
+    # networks:
+    #   - shared-nw
     env_file:
       - ../.env.docker
     volumes:
