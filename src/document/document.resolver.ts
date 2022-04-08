@@ -10,7 +10,7 @@ export class DocumentResolver {
   }
 
   @Query(() => String)
-  sayHello(): string {
+  getStats(): string {
     return 'Hello World!';
   }
 
