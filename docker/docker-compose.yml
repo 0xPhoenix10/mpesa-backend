@@ -17,6 +17,11 @@ services:
       - ../prisma:/app/prisma:cached
       - ../input:/app/input:cached
       - ../output:/app/output:cached
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.1.2
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
 networks:
   shared-nw:
     name: shared-nw

@@ -9,6 +9,8 @@ import { getDataFromPDF } from './services/tabula.service';
 import { MpesaTransactions } from './services/mpesa/transactions.service';
 import { OriginUser } from './services/mpesa/originUser';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'; // ES Modules import
+import { elastic } from './repositories/es.repository';
+import { allDocs, generalAggs } from './repositories/queries/agr';
 @Injectable()
 export class DocumentService {
   async onModuleInit() {
@@ -30,6 +32,15 @@ export class DocumentService {
     // this.getDocumentDetails({ password: '24564409-1877', key:'locked/1.pdf', fileName: '1.pdf' });
   }
 
+  async stats(userId): Promise<any> {
+    return elastic.query(generalAggs(userId), 'mpesa-transactions' );
+  }
+
+  async excelData(userId): Promise<any> {
+    const { _source: user } = await  elastic.doc(userId, 'user' );
+    const { hits: transactionsDetails } = await  elastic.query({ size:10000 }, 'mpesa-transactions' );
+    return { user, transactions: transactionsDetails.hits.map(item => item._source) };
+  }
 
   async mpesaStatements() {
     try {
@@ -54,27 +65,28 @@ export class DocumentService {
               //
               // Get Passwords
               //
-              const password = await CrackPassword(file, documentDetails.potentialPassword );
+              // console.log('start crach');
+              // const password = await CrackPassword(file, documentDetails.potentialPassword );
               // console.log('password:', password);
 
-              const val = await getDataFromPDF(`./input/${documentDetails.fileName}`, password, 'all');
-              const originUser = await OriginUser(val);
+              const val = await getDataFromPDF(`./input/${documentDetails.fileName}`, '35388008', 'all');
+              // const originUser = await OriginUser(val);
               // console.log('originUser:', originUser);
-              await MpesaTransactions(originUser, val.transactions);
+              // await MpesaTransactions(originUser, val.transactions);
 
-              // move statement to output folder if all above is done correctly.
-              await fs.copyFile(`./input/${file}`, `./output/${file}`, function (err) {
-                if (err) throw err;
-                console.log('Successfully renamed - AKA moved!');
-                fs.unlink(`./input/${file}`, (err) => {
-                  if (err) {
-                    console.error(err);
-                    return;
-                  }
-                  console.log('file removed');
-                  //file removed
-                });
-              });
+              // // move statement to output folder if all above is done correctly.
+              // await fs.copyFile(`./input/${file}`, `./output/${file}`, function (err) {
+              //   if (err) throw err;
+              //   console.log('Successfully renamed - AKA moved!');
+              //   fs.unlink(`./input/${file}`, (err) => {
+              //     if (err) {
+              //       console.error(err);
+              //       return;
+              //     }
+              //     console.log('file removed');
+              //     //file removed
+              //   });
+              // });
  
              
 

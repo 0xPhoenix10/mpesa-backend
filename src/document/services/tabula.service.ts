@@ -167,7 +167,7 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
         const get = { 
           transaction: {
             mpesaTransactionId: row[0]?.text,
-            createdAt: new Date(row[1]?.text).toString(),
+            createdAt: new Date(row[1]?.text).toISOString(),
             description: transactionsDetails,
             status: row[3]?.text,
             in: amountIn,

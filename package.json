@@ -16,7 +16,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "docker": "yarn copyPrismaOrigin && yarn prisma generate && docker-compose -f ./docker/docker-compose.yml up leviticus",
-    "docker:prod": "docker-compose -f ./docker/docker-compose-prod.yml up leviticusp",
+    "docker:prod": "docker-compose -f ./docker/docker-compose-prod.yml up traefik",
     "docker:neo": "docker compose -f ./docker/docker-compose-neo.yml up",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -101,7 +101,11 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
+    "maxWorkers": 1,
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFiles": [
+      "<rootDir>/../.jest/setEnvVars.js"
+    ]
   }
 }
