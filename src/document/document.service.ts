@@ -33,7 +33,9 @@ export class DocumentService {
   }
 
   async stats(userId): Promise<any> {
-    return elastic.query(generalAggs(userId), 'mpesa-transactions' );
+    const { _source: user } = await  elastic.doc(userId, 'user' );
+    const transactionDetails =  await elastic.query(generalAggs(userId), 'mpesa-transactions' );
+    return ({ transactionDetails, user });
   }
 
   async excelData(userId): Promise<any> {

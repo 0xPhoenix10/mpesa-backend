@@ -1,13 +1,7 @@
 import { flattenObject } from '../../helpers/flatten';
-const XLSX = require('xlsx');
+import XLSX from 'xlsx';
 
 export const toExcel = async (data, path)=> {
-  // console.log('data:', data.transactions);
-  // const transaction = data.transactions.map(item => {
-  //   return { ...item.transaction };
-  // });
-
-
   const userDetails =  [flattenObject(data.user)];
 
   const workSheet = XLSX.utils.json_to_sheet(data.transactions);
@@ -16,4 +10,6 @@ export const toExcel = async (data, path)=> {
   XLSX.utils.book_append_sheet(workBook, workSheet, 'transaction');
   XLSX.utils.book_append_sheet(workBook, user, 'user');
   await XLSX.writeFile(workBook, path);
+  // console.log('XLSX:', XLSX);
+  // return XLSX.stream.set_readable(workBook);
 };
