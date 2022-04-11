@@ -44,22 +44,22 @@ export const generalAggs = (userId) => {
           'calendar_interval': 'week',
         },
         'aggs': {
-          'max incomming payment amount per week': {
+          'incomming': {
             'max': {
               'field': 'in',
             },
           },
-          'max outgoing payment amount per week': {
+          'outgoing': {
             'max': {
               'field': 'out',
             },
           },
-          'In amount per week': {
+          'sumIn': {
             'sum': {
               'field': 'in',
             },
           },
-          'Out amount per week': {
+          'sumOut': {
             'sum': {
               'field': 'out',
             },

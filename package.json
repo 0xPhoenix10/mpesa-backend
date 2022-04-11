@@ -16,6 +16,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "docker": "yarn copyPrismaOrigin && yarn prisma generate && docker-compose -f ./docker/docker-compose.yml up leviticus",
+    "docker:kibana": " docker-compose -f ./docker/docker-compose.yml up kibana",
     "docker:prod": "docker-compose -f ./docker/docker-compose-prod.yml up traefik",
     "docker:neo": "docker compose -f ./docker/docker-compose-neo.yml up",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
