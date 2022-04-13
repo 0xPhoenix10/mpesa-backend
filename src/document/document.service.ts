@@ -34,6 +34,9 @@ export class DocumentService {
 
   async stats(userId): Promise<any> {
     const { _source: user } = await  elastic.doc(userId, 'user' );
+    console.log('user:', user);
+    
+
     const transactionDetails =  await elastic.query(generalAggs(userId), 'mpesa-transactions' );
     return ({ transactionDetails, user });
   }
