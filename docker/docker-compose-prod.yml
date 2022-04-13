@@ -15,14 +15,14 @@ services:
       - ../prisma:/app/prisma:cached
       - ../input:/app/input:cached
       - ../output:/app/output:cached
-  traefik:
-    image: traefik:latest
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    depends_on:
-      - leviticusp
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: on-failure
+  # traefik:
+  #   image: traefik:latest
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #     - "8080:8080"
+  #   depends_on:
+  #     - leviticusp
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   restart: on-failure
