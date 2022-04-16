@@ -1,7 +1,9 @@
-
-example mpesa statement file located at example folder
+Example mpesa statement file located at example folder
 password: 35388008
 
+
+
+---
 
 
 <p align="center">
