@@ -8,6 +8,8 @@ services:
       dockerfile: ./docker/Dockerfile.development
     ports:
       - 8001:7000
+    depends_on:
+      - elastic
     networks:
       - shared-nw
     env_file:
@@ -17,6 +19,18 @@ services:
       - ../prisma:/app/prisma:cached
       - ../input:/app/input:cached
       - ../output:/app/output:cached
+
+  elastic:
+    image: elasticsearch:8.1.0
+    container_name: elastic
+    restart: 'no'
+    networks:
+      - shared-nw
+    ports:
+      - 9200:9200
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.1.2
