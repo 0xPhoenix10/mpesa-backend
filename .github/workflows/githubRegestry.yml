@@ -22,13 +22,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: test
-        env:
-          some: value
-        run: |
-          # Test the project
-          npm install
-          npm run test --if-present
+      # - name: test
+      #   env:
+      #     some: value
+      #   run: |
+      #     # Test the project
+      #     npm install
+      #     npm run test --if-present
 
       - name: Checkout
         uses: actions/checkout@v2
