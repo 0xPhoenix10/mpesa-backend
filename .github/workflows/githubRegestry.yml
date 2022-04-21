@@ -63,7 +63,7 @@ jobs:
       #     # build on feature branches, push only on main branch
       #     push: ${{ github.ref == 'refs/heads/main' }}
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, tag, and push image to Github registry
         id: build-image
         # env:
         # ECR_REGISTRY: 550586462614.dkr.ecr.eu-central-1.amazonaws.com
@@ -76,6 +76,20 @@ jobs:
           docker push ghcr.io/sevifinance/leviticus:latest
           echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
 
+      # - name: Trigger deploy
+      #   uses: Consensys/kubernetes-action@master
+      #   env:
+      #     KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      #   with:
+      #     args: apply deployment.yaml
+
+      - name: Rancher deploy new pod
+        uses: colbyhill21/Rancher-Action@1.1
+        with:
+          args: '"rollout restart deploy leviticus"'
+          token: ${{ secrets.RANCHER_TOKEN }}
+          context: ${{ secrets.RANCHER_CONTEXT }}
+          url: ${{ secrets.RANCHER_URL }}
       # - name: Download task definition
       #   run: |
       #     aws ecs describe-task-definition --task-definition leviticus --query taskDefinition > task-definition.json
