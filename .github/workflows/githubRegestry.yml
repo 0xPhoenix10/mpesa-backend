@@ -40,8 +40,13 @@ jobs:
       #     docker push ghcr.io/sevifinance/leviticus:latest
       #     echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
 
-      - name: Rancher rollout new pod
-        uses: ./.github/actions/rancherAction
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # This step checks out a copy of your repository.
+      - uses: actions/checkout@v3
+      # This step references the directory that contains the action.
+      - uses: ./.github/actions/rancherAction
         with:
           args: '"rollout restart deploy leviticus"'
           token: ${{ secrets.RANCHER_TOKEN }}
