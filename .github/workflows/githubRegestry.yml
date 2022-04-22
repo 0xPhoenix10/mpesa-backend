@@ -16,6 +16,19 @@ on:
 name: Node Project `Leviticus` CI on ECR
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # This step checks out a copy of your repository.
+      - uses: actions/checkout@v3
+      # This step references the directory that contains the action.
+      - uses: ./.github/actions/rancherAction
+        with:
+          args: '"rollout restart deploy leviticus"'
+          token: ${{ secrets.RANCHER_TOKEN }}
+          context: default
+          url: ${{ secrets.RANCHER_URL }}
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -39,16 +52,3 @@ jobs:
       #     docker tag leviticus:latest ghcr.io/sevifinance/leviticus:latest
       #     docker push ghcr.io/sevifinance/leviticus:latest
       #     echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      # This step checks out a copy of your repository.
-      - uses: actions/checkout@v3
-      # This step references the directory that contains the action.
-      - uses: ./.github/actions/rancherAction
-        with:
-          args: '"rollout restart deploy leviticus"'
-          token: ${{ secrets.RANCHER_TOKEN }}
-          context: default
-          url: ${{ secrets.RANCHER_URL }}
