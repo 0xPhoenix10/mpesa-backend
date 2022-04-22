@@ -41,7 +41,7 @@ jobs:
       #     echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
 
       - name: Rancher rollout new pod
-        uses: ./.github/actions/rancherAction
+        uses: .github/actions/rancherAction
         with:
           args: '"rollout restart deploy leviticus"'
           token: ${{ secrets.RANCHER_TOKEN }}
