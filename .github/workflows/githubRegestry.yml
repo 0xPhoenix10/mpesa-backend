@@ -40,8 +40,8 @@ jobs:
       #     docker push ghcr.io/sevifinance/leviticus:latest
       #     echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
 
-      - name: Rancher restart new pod
-        uses: colbyhill21/Rancher-Action@1.1
+      - name: Rancher rollout new pod
+        uses: ./.github/actions/rancherAction
         with:
           args: '"rollout restart deploy leviticus"'
           token: ${{ secrets.RANCHER_TOKEN }}
