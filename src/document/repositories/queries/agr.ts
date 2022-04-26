@@ -22,6 +22,67 @@ export const allDocs = (userId) => {
   return { size: 100 };
 };
 
+export const avg3month = (userId: string) => {
+  return {
+    size: 0,
+    query: {
+      match: {
+        user: userId,
+      }
+    },
+    aggs: {
+      avgDaily: {
+        filter: {
+          range: {
+            'createdAt': {
+              gte: 'now-3M',
+              lte: 'now'
+            }
+          }
+        },
+        aggs: {
+          avgIn: {
+            avg: {
+              field: 'in'
+            }
+          },
+          avgOut: {
+            avg: {
+              field: 'out'
+            }
+          },
+        }
+      },
+      avgPositiveBalance: {
+        filter: {
+          range: {
+            balanceAfter: {
+              gt: 0
+            }
+          }
+        },
+        aggs: {
+          avgPositive: {
+            avg: {
+              field: 'balanceAfter'
+            }
+          }
+        }
+      },
+      totalIn: {
+        sum: {
+          field: 'in'
+        }
+      },
+      totalOut: {
+        sum: {
+          field: 'out'
+        }
+      }
+    },
+  }
+}
+
 export const generalAggsLast3Months = (startDate, endDate) => {
   return {
     'size': 0,
@@ -78,7 +139,12 @@ export const generalAggsLast3Months = (startDate, endDate) => {
 export const generalAggs = (userId) => {
   return  {
     'size': 0,
-    'aggs': {   
+    'query': {
+      'match': {
+        'id': userId
+      }
+    },
+    'aggs': {
       'name': {
         'terms': {
           'field': 'name.keyword',
