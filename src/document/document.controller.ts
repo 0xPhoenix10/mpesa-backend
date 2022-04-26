@@ -27,12 +27,17 @@ export class DocumentController {
     try {
       const [ filename ] = params.doc.split('.');
       const val: any = await getDataFromPDF(`./input/${filename}`, query.password, 'all');
-      // console.log('val:', val);
+      console.log('val:', val.transactions);
       const setData = await elastic.mpesaTransactions(val, 'mpesa-transactions' );
       res.send({ userId: setData._id, name: val.user.name, phoneNumber: val.user.phoneNumber });
     } catch (err){
       throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }
+  }
+
+  @Get('teststat/:userId')
+  async testStat(@Param('userId') userId: string) {
+    return this.documentService.statsAvg(userId);
   }
 
   @Get('stats/:userId')
