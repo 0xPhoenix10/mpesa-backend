@@ -31,19 +31,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PASSWORD }}
 
-      # - name: Build, tag, and push image to Github registry
-      #   id: build-image
-      #   run: |
-      #     # Build a docker container and push it to GITHUB
-      #     docker build  -f ./docker/Dockerfile.production -t leviticus .
-      #     docker tag leviticus:latest ghcr.io/sevifinance/leviticus:latest
-      #     docker push ghcr.io/sevifinance/leviticus:latest
-      #     echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
+      - name: Build, tag, and push image to Github registry
+        id: build-image
+        run: |
+          # Build a docker container and push it to GITHUB
+          docker build  -f ./docker/Dockerfile.production -t leviticus .
+          docker tag leviticus:latest ghcr.io/sevifinance/leviticus:latest
+          docker push ghcr.io/sevifinance/leviticus:latest
+          echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
 
-      - name: Rancher rollout new pod
-        uses: colbyhill21/Rancher-Action@1.1
-        with:
-          args: '"rollout restart deploy leviticus"'
-          token: ${{ secrets.RANCHER_TOKEN }}
-          context: default
-          url: ${{ secrets.RANCHER_URL }}
+      # - name: Rancher rollout new pod
+      #   uses: colbyhill21/Rancher-Action@1.1
+      #   with:
+      #     args: '"rollout restart deploy leviticus"'
+      #     token: ${{ secrets.RANCHER_TOKEN }}
+      #     context: default
+      #     url: ${{ secrets.RANCHER_URL }}
