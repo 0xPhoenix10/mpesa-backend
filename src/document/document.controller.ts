@@ -6,6 +6,7 @@ import { toExcel } from './export/toExcel';
 import { createReadStream } from 'fs';
 import { elastic } from './repositories/es.repository';
 import { DocumentService } from './document.service';
+import { TransactionStatsDto } from './transaction-stats.dto';
 
 @Controller('file')
 export class DocumentController {
@@ -27,7 +28,7 @@ export class DocumentController {
     try {
       const [ filename ] = params.doc.split('.');
       const val: any = await getDataFromPDF(`./input/${filename}`, query.password, 'all');
-      // console.log('val:', val);
+      console.log('val:', val.transactions);
       const setData = await elastic.mpesaTransactions(val, 'mpesa-transactions' );
       res.send({ userId: setData._id, name: val.user.name, phoneNumber: val.user.phoneNumber });
     } catch (err){
@@ -36,13 +37,33 @@ export class DocumentController {
   }
 
   @Get('stats/:userId')
-  async stats(@Query() query, @Param() params) {
-    // console.log('params:', params);
-    // console.log('query:', query);
+  async stats(@Query() query: TransactionStatsDto, @Param('userId') userId) {
+    const { type } = query;
+    console.log(type)
+
     try {
-      return this.documentService.stats(params.userId);
+      switch (type) {
+        case 'basic':
+          const user = await this.documentService.stats(userId);
+          const transactions = await this.documentService.transactionStats(userId);
+          return {
+            user,
+            transactions
+          }
+          break;
+        case 'range':
+          return this.documentService.getByDate(userId, query.start, query.end);
+          break;
+        case 'search':
+          return this.documentService.searchByDescription(userId, query.search);
+          break;
+        default:
+          throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      }
     } catch (err){
-      throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
+      console.log(err);
+      if (err.Status !== HttpStatus.NOT_FOUND)
+        throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }
   }
 
