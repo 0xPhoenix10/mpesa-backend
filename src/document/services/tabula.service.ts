@@ -2,9 +2,11 @@ import { Tabula } from 'src/helpers/tabula';
 import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
 import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
-import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
-import { textToLabels } from '../../textToLabel/textInput';
-import { NodeLabel } from '../type/nodeLabel.enum';
+import { getLabelsML } from '../../textToLabel/bulkProcessLabelsML';
+// import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
+// import { textToLabels } from '../../textToLabel/textInput';
+// import { NodeLabel } from '../type/nodeLabel.enum';
+
 
 const knownSummaryItems = [
   { field: 'SEND MONEY:', name: 'sendMoney' },
@@ -76,8 +78,6 @@ const knownUserItems = [
   },
 ];
 
-
-
 export const getDataFromPDF = async (file: string, password: string, pages: '1' | '2' | 'all') => {
   const tableData = await Tabula(file, password, pages);
   if (!tableData) throw new Error('can not get the table data');
@@ -101,67 +101,64 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
         }
       });
 
-      const transactionsTypes = [
-        {
-          field: 'Funds received from',
-          name: 'from',
-          label: NodeLabel.USER,
-          value: (item): DescriptionDeconstructionUser => {
-            return textToLabels(item, NodeLabel.USER);
-          },
-        },
-        {
-          field: 'Customer Transfer to',
-          name: 'to',
-          label: NodeLabel.USER,
-          value: (item): DescriptionDeconstructionUser =>  {
-            return textToLabels(item, NodeLabel.USER);
-          },
-        },
-        {
-          field: 'Customer Payment to',
-          name: 'to',
-          label: NodeLabel.USER,
-          value: (item) : DescriptionDeconstructionUser => {
-            return textToLabels(item, NodeLabel.USER);
-          },
-        },
-        {
-          field: 'Business Payment from',
-          name: 'from',
-          label: NodeLabel.ACCOUNT,
-          value: (item) : DescriptionDeconstructionUser => {
-            return textToLabels(item, NodeLabel.ACCOUNT);
-          },
-        },
-        {
-          field: 'Merchant Payment Online to',
-          name: 'to',
-          label: NodeLabel.ACCOUNT,
-          value: (item) => {
-            return textToLabels(item, NodeLabel.ACCOUNT );
-          },
+      // const transactionsTypes = [
+      //   {
+      //     field: 'Funds received from',
+      //     name: 'from',
+      //     label: NodeLabel.USER,
+      //     value: (item): DescriptionDeconstructionUser => {
+      //       return textToLabels(item, NodeLabel.USER);
+      //     },
+      //   },
+      //   {
+      //     field: 'Customer Transfer to',
+      //     name: 'to',
+      //     label: NodeLabel.USER,
+      //     value: (item): DescriptionDeconstructionUser =>  {
+      //       return textToLabels(item, NodeLabel.USER);
+      //     },
+      //   },
+      //   {
+      //     field: 'Customer Payment to',
+      //     name: 'to',
+      //     label: NodeLabel.USER,
+      //     value: (item) : DescriptionDeconstructionUser => {
+      //       return textToLabels(item, NodeLabel.USER);
+      //     },
+      //   },
+      //   {
+      //     field: 'Business Payment from',
+      //     name: 'from',
+      //     label: NodeLabel.ACCOUNT,
+      //     value: (item) : DescriptionDeconstructionUser => {
+      //       return textToLabels(item, NodeLabel.ACCOUNT);
+      //     },
+      //   },
+      //   {
+      //     field: 'Merchant Payment Online to',
+      //     name: 'to',
+      //     label: NodeLabel.ACCOUNT,
+      //     value: (item) => {
+      //       return textToLabels(item, NodeLabel.ACCOUNT );
+      //     },
 
-        },
-      ];
+      //   },
+      // ];
  
 
       //
       // transactions details
       // 
       if (textFirstItem.length === 10) {
-
         const transactionsDetails = row[2]?.text.replaceAll('\r', ' ').replace(/ +(?= )/g, '');
-
-        let node = null;
-        transactionsTypes.forEach(item => {
-          if (transactionsDetails.includes(item.field)) {
-            node = { direction: item.name, values: item.value(transactionsDetails), label: item.label };
-          } 
-        });
-
+        // let node = null;
+        // transactionsTypes.forEach(item => {
+        //   if (transactionsDetails.includes(item.field)) {
+        //     node = { direction: item.name, values: item.value(transactionsDetails), label: item.label };
+        //   } 
+        // });
         const amountIn = row[4]?.text ? parseFloat(row[4]?.text.replaceAll(',', '')) : null;
-        const  amountOut = row[5]?.text ? Math.abs(parseFloat(row[5]?.text.replaceAll(',', ''))) : null;
+        const amountOut = row[5]?.text ? Math.abs(parseFloat(row[5]?.text.replaceAll(',', ''))) : null;
         const amount = amountIn || amountOut;
         
         const get = { 
@@ -177,7 +174,7 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
             amount: amount,
             balanceAfter: row[6]?.text ? parseFloat(row[6]?.text.replaceAll(',', '')) : null,
           }, 
-          node,
+          // node,
         };
         transactions.push(get);
       }
@@ -200,6 +197,8 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
 
   }
 
-  return { user, summary, transactions };
+  const transactionsInclFromDescriptionLabels = await getLabelsML(transactions);
+
+  return { user, summary, transactionsInclFromDescriptionLabels };
 };
 

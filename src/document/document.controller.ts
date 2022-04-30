@@ -30,6 +30,7 @@ export class DocumentController {
       const val: any = await getDataFromPDF(`./input/${filename}`, query.password, 'all');
       console.log('val:', val.transactions);
       const setData = await elastic.mpesaTransactions(val, 'mpesa-transactions' );
+      
       res.send({ userId: setData._id, name: val.user.name, phoneNumber: val.user.phoneNumber });
     } catch (err){
       throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
@@ -39,7 +40,7 @@ export class DocumentController {
   @Get('stats/:userId')
   async stats(@Query() query: TransactionStatsDto, @Param('userId') userId) {
     const { type } = query;
-    console.log(type)
+    console.log(type);
 
     try {
       switch (type) {
@@ -48,8 +49,8 @@ export class DocumentController {
           const transactions = await this.documentService.transactionStats(userId);
           return {
             user,
-            transactions
-          }
+            transactions,
+          };
           break;
         case 'range':
           return this.documentService.getByDate(userId, query.start, query.end);
