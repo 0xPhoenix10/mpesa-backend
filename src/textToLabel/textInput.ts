@@ -49,7 +49,6 @@ export const textToLabels = (text, label) : DescriptionDeconstructionUser | Desc
     // } 
 
 
-    // console.log('till:', till);
     // const findPhone = findPhoneNumbersInText(item, 'KE');
     // if (findPhone[0]?.number?.number) {
     //   return { ...foundPhoneNumber(findPhone[0]?.number?.number, item), transactionType: TransactionType.USER };

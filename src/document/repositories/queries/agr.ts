@@ -31,26 +31,26 @@ const aggDailyAvg = (field, returnField) => {
       date_histogram: {
         calendar_interval: 'day',
         min_doc_count: 0,
-        field: 'createdAt'
+        field: 'createdAt',
       },
       aggs: {
         daySum: {
           sum: {
-            field
-          }
+            field,
+          },
         },
-      }
+      },
     },
     [avgReturnField]: {
       // tag::avg-bucket-agg-syntax[]
-      "avg_bucket": {
-        "buckets_path": `${sumReturnField}>daySum`,
-        "gap_policy": "skip",
+      'avg_bucket': {
+        'buckets_path': `${sumReturnField}>daySum`,
+        'gap_policy': 'skip',
       },
       // end::avg-bucket-agg-syntax[]
-    }
-  }
-}
+    },
+  };
+};
 
 export const avgFilterByDate = (start, end) => {
   return {
@@ -58,16 +58,16 @@ export const avgFilterByDate = (start, end) => {
       range: {
         'createdAt': {
           gte: start,
-          lte: end
-        }
-      }
+          lte: end,
+        },
+      },
     },
     aggs: {
       ...aggDailyAvg('in', 'DailyIn'),
       ...aggDailyAvg('out', 'DailyOut'),
-    }
-  }
-}
+    },
+  };
+};
 
 export const avgFromRange = (userId: string, start: string, end: string) => {
   return {
@@ -75,11 +75,11 @@ export const avgFromRange = (userId: string, start: string, end: string) => {
     query: {
       match: {
         user: userId,
-      }
+      },
     },
     ...avgFilterByDate(start, end),
-  }
-}
+  };
+};
 
 export const avg3month = (userId: string) => {
   return {
@@ -87,7 +87,7 @@ export const avg3month = (userId: string) => {
     query: {
       match: {
         user: userId,
-      }
+      },
     },
     aggs: {
       avgDaily: avgFilterByDate('now-3M', 'now'),
@@ -95,69 +95,68 @@ export const avg3month = (userId: string) => {
         filter: {
           range: {
             balanceAfter: {
-              gt: 0
-            }
-          }
+              gt: 0,
+            },
+          },
         },
         aggs: {
           avgPositive: {
             avg: {
-              field: 'balanceAfter'
-            }
-          }
-        }
+              field: 'balanceAfter',
+            },
+          },
+        },
       },
       totalIn: {
         sum: {
-          field: 'in'
-        }
+          field: 'in',
+        },
       },
       totalOut: {
         filter: {
           match: {
-            description: 'loan'
-          }
+            description: 'loan',
+          },
         },
         aggs: {
           total: {
             sum: {
-              field: 'out'
-            }
-          }
-        }
+              field: 'out',
+            },
+          },
+        },
       },
     },
-  }
-}
+  };
+};
 
 export const personalTransactionCountLast30days = (userId, phone) => {
-  console.log(userId, phone);
   return {
     query: {
       bool: {
         must: [
           {
             match: {
-              description: phone
-            }
+              description: phone,
+            },
           },
           {
             match: {
-              user: userId
-            }
+              user: userId,
+            },
           },
         ],
         filter: {
           range: {
             in: {
-                gt: 0
-              }
-            }
-        }
-      }
-    }
-  }
-}
+              gt: 0,
+            },
+          },
+        },
+      },
+    },
+  };
+};
 
 export const totalCash = (userId) => {
   return {
@@ -165,14 +164,14 @@ export const totalCash = (userId) => {
       bool: {
         must: {
           match: {
-            userId
-          }
+            userId,
+          },
         },
         must_not: {
           match: {
-            description: 'OverDraft of Credit Party'
+            description: 'OverDraft of Credit Party',
           },
-        }
+        },
       },
       // aggs: {
       //   total: {
@@ -181,31 +180,30 @@ export const totalCash = (userId) => {
       //     }
       //   }
       // }
-    }
-  }
-}
+    },
+  };
+};
 
 export const searchTransactionByDescription = (userId: string, searchText: string) => {
-  console.log(userId, searchText);
   return {
     query: {
       bool: {
         must: [
           {
             match: {
-              description: searchText
-            }
+              description: searchText,
+            },
           },
           {
             match: {
-              user: userId
-            }
-          }
-        ]
-      }
-    }
-  }
-}
+              user: userId,
+            },
+          },
+        ],
+      },
+    },
+  };
+};
 
 export const generalAggsLast3Months = (startDate, endDate) => {
   return {
@@ -265,8 +263,8 @@ export const generalAggs = (userId) => {
     'size': 0,
     'query': {
       'match': {
-        'id': userId
-      }
+        'id': userId,
+      },
     },
     'aggs': {
       'name': {

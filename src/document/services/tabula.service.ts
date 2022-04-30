@@ -197,8 +197,8 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
 
   }
 
-  const transactionsInclFromDescriptionLabels = await getLabelsML(transactions);
+  getLabelsML(transactions);
 
-  return { user, summary, transactionsInclFromDescriptionLabels };
+  return { user, summary, transactions };
 };
 

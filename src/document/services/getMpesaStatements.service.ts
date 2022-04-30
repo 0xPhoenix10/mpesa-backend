@@ -63,13 +63,10 @@ export const MpesaStatements = async () => {
       // save file to input directory. 
       // remove pin from attachments
       const list = attachments.filter((item) => item !== null);
-      // console.log('list:', list);
       for (const item of list) {
-        // console.log('item:', item);
         const file = await writeFile(`./input/${item.filename}`, item.data );
 
         
-        // console.log('file:', file);
         // start encrypting file names
         // RemovePassword(item.filename);
       }

@@ -8,7 +8,7 @@ export const Tabula = async (file = './output/test.pdf', password = '123', pages
       return JSON.parse(child);
 
     } catch (err) {
-      console.log('err:someErrir', err);
+      console.error('err:someErrir', err);
       return null;
     }
   }
@@ -19,7 +19,7 @@ export const Tabula = async (file = './output/test.pdf', password = '123', pages
       return JSON.parse(child);
 
     } catch (err) {
-      console.log('err:someErrir', err);
+      console.error('err:someErrir', err);
       return null;
     }
   }

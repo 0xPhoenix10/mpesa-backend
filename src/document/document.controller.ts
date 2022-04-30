@@ -19,7 +19,6 @@ export class DocumentController {
   },
   ))
   async uploadMultiFiles(@UploadedFiles() files: Array<Express.Multer.File>) {
-    console.log(files);
     return files;
   }
 
@@ -28,7 +27,6 @@ export class DocumentController {
     try {
       const [ filename ] = params.doc.split('.');
       const val: any = await getDataFromPDF(`./input/${filename}`, query.password, 'all');
-      console.log('val:', val.transactions);
       const setData = await elastic.mpesaTransactions(val, 'mpesa-transactions' );
       
       res.send({ userId: setData._id, name: val.user.name, phoneNumber: val.user.phoneNumber });
@@ -40,7 +38,6 @@ export class DocumentController {
   @Get('stats/:userId')
   async stats(@Query() query: TransactionStatsDto, @Param('userId') userId) {
     const { type } = query;
-    console.log(type);
 
     try {
       switch (type) {
@@ -62,7 +59,7 @@ export class DocumentController {
           throw new HttpException('Not found', HttpStatus.NOT_FOUND);
       }
     } catch (err){
-      console.log(err);
+      console.error(err);
       if (err.Status !== HttpStatus.NOT_FOUND)
         throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }

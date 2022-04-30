@@ -10,6 +10,5 @@ export const toExcel = async (data, path)=> {
   XLSX.utils.book_append_sheet(workBook, workSheet, 'transaction');
   XLSX.utils.book_append_sheet(workBook, user, 'user');
   await XLSX.writeFile(workBook, path);
-  // console.log('XLSX:', XLSX);
   // return XLSX.stream.set_readable(workBook);
 };
