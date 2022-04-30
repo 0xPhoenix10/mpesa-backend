@@ -2,7 +2,6 @@ import { flattenObject } from '../helpers/flatten';
 
 const neo4j = require('neo4j-driver');
 
-console.log('start');
 
 const driver = neo4j.driver(
   'neo4j+s://b8483c2c.databases.neo4j.io',
@@ -16,16 +15,13 @@ const session = driver.session({
 
 export const neo = {
   async query(query: string, params?: any) {
-    // console.log('params:', params);
     const txc = session.beginTransaction();
     try {
       const result1 = await txc.run(query, params );
       await txc.commit();
       return result1.records;
     } catch (error) {
-      console.log(error);
       await txc.rollback();
-      console.log('rolled back');
     } finally {
       // await session.close();
     }

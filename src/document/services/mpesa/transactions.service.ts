@@ -49,9 +49,7 @@ export const  MpesaTransactions = async  (userOrigin, items) => {
         }
 
       } else {
-        console.log('all other items');
         
-        // console.log('item:', item);
         // just add to unknown account and user endpoint to capture
       }
       //

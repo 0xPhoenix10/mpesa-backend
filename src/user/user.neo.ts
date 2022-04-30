@@ -13,7 +13,6 @@ export const userNeoDocuments = {
         RETURN n`;
         
       const values = await neo.query(query, { props: userDetails  });
-      // console.log('values:', values[0]._fields[0]);
 
       return { values : values[0]._fields[0].properties, id: values[0]._fields[0].identity.low };
 

@@ -3,7 +3,6 @@ import { neo } from '../neo/auth';
 
 export const transactionNeo = {
   async findOrCreateAccount(account) {
-    // console.log('account:', account);
     const query = `
     MERGE (a:account { mpesaPaybill: '${account.values.mpesaPaybill}'})
     ON MATCH
@@ -43,7 +42,6 @@ export const transactionNeo = {
           RETURN u1, u2, t
     `;
   
-      // console.log('query:', query);
       const created = await neo.query(query, { transaction, nodeTo: nodeTo.values, nodeFrom: nodeFrom.values });
     }
 

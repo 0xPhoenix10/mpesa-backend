@@ -16,8 +16,6 @@ if (process.env.NODE_ENV === 'production') {
   url = `${publicURL.protocol}//${username}:${password}@${publicURL.host}${publicURL.path}`;
 }
 
-// console.log('url:', url);
-// console.log('process.env.NODE_ENV:', process.env.NODE_ENV);
 
 const ESclient = new Client({ node: url });
 

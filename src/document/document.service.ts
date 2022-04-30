@@ -20,16 +20,12 @@ import {
 @Injectable()
 export class DocumentService {
   async onModuleInit() {
-    // console.log('run');
-    // console.log('start');
     // this.mpesaStatements();
 
 
     // const val = await getDataFromPDF('./input/MPESA_Statement_2021-03-22_to_2022-03-22_2547xxxxxx246.pdf', '24564409-1877', 'all');
-    // console.log('val:', val);
     
     // toExcel(val);
-    // console.log('val:', val);
 
     // const originUser = await OriginUser(val);
 
@@ -40,7 +36,6 @@ export class DocumentService {
 
   async stats(userId): Promise<any> {
     const { _source: user } = await  elastic.doc(userId, 'user' );
-    console.log('user:', user);
     
     const transactionDetails =  await elastic.query(generalAggs(userId), 'mpesa-transactions' );
     return ({ transactionDetails, user });
@@ -54,7 +49,7 @@ export class DocumentService {
       await elastic.query(totalCash(userId), 'mpesa-transactions'),
       // @ts-ignore: next-line
       await elastic.query(personalTransactionCountLast30days(userId, user.phoneNumber), 'mpesa-transactions'),
-    ]
+    ];
     const [avg3monthData, totalCashData, personalTransactionData] = await Promise.all(transactionPromises);
 
     return { avg3monthData, totalCashData, personalTransactionData };
@@ -97,25 +92,20 @@ export class DocumentService {
               //
               // Get Passwords
               //
-              // console.log('start crach');
               // const password = await CrackPassword(file, documentDetails.potentialPassword );
-              // console.log('password:', password);
 
               const val = await getDataFromPDF(`./input/${documentDetails.fileName}`, '35388008', 'all');
               // const originUser = await OriginUser(val);
-              // console.log('originUser:', originUser);
               // await MpesaTransactions(originUser, val.transactions);
 
               // // move statement to output folder if all above is done correctly.
               // await fs.copyFile(`./input/${file}`, `./output/${file}`, function (err) {
               //   if (err) throw err;
-              //   console.log('Successfully renamed - AKA moved!');
               //   fs.unlink(`./input/${file}`, (err) => {
               //     if (err) {
               //       console.error(err);
               //       return;
               //     }
-              //     console.log('file removed');
               //     //file removed
               //   });
               // });
