@@ -13,6 +13,9 @@ on:
   pull_request:
     branches: [production]
 
+env:
+  CONTAINER_IMAGE_TAG: ${{ github.run_number }}
+
 name: Node Project `Leviticus` CI on ECR
 
 jobs:
@@ -36,9 +39,36 @@ jobs:
         run: |
           # Build a docker container and push it to GITHUB
           docker build  -f ./docker/Dockerfile.production -t leviticus .
-          docker tag leviticus:latest ghcr.io/sevifinance/leviticus:latest
-          docker push ghcr.io/sevifinance/leviticus:latest
-          echo "::set-output name=image::ghcr.io/sevifinance/leviticus:latest"
+          docker tag leviticus:latest ghcr.io/sevifinance/leviticus:${CONTAINER_IMAGE_TAG}
+          docker push ghcr.io/sevifinance/leviticus:${CONTAINER_IMAGE_TAG}
+          echo "::set-output name=image::ghcr.io/sevifinance/leviticus:${CONTAINER_IMAGE_TAG}"
+
+      # Install yq
+      - name: Install yq
+        run: |
+          wget https://github.com/mikefarah/yq/releases/download/v4.12.0/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
+          yq --version
+
+      # Clone git repository with Helm charts, update and push changes
+      - name: Update image tag in Helm git repo 
+        run: | 
+          CONTAINER_IMAGE_TAG=${CONTAINER_IMAGE_TAG}
+          echo New container image tag: $CONTAINER_IMAGE_TAG
+          echo Create temporary folder to clone the repo into...
+          TEMP_FOLDER="$(mktemp -d)" 
+          echo Clone the repository...
+          git clone -b main "https://github.com/sevifinance/Sevi-Deploy.git" ${TEMP_FOLDER} 
+          cd ${TEMP_FOLDER}/leviticus
+          ls
+          echo Update Helm chart value with new image tag
+          CONTAINER_IMAGE_TAG=$CONTAINER_IMAGE_TAG yq e -i '.helm.values.image.tag = env(CONTAINER_IMAGE_TAG)' ./fleet.yaml
+          echo 'Container image tag updated in fleet.yaml' 
+          cd ../
+          git config user.email "${{ github.actor }}@gmail.com" 
+          git config user.name "${{ github.actor }}" 
+          git add .  
+          git commit -m "refactor - updated Helm chart values with container image - $CONTAINER_IMAGE_TAG" 
+          git push -u origin main
 
       # - name: Rancher rollout new pod
       #   uses: colbyhill21/Rancher-Action@1.1
