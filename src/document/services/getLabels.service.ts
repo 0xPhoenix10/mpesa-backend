@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { transactionToDescriptionArray } from '../helpers/toDescriptionArray';
 
 
 function sleep(ms) {
@@ -14,7 +13,14 @@ export class LabelService {
   }
 
   async run(transactions) {
-    const cleanArray = transactionToDescriptionArray.cleanArray(transactions);
+    // console.log('transactions:', transactions);
+    // console.log('start transa');
+    const cleanArray = transactions.map(item => {
+      // console.log('item:', item);
+      return item.description;
+    });
+    console.log('cleanArray:', JSON.stringify(cleanArray));
+    return;
     try {
       const body = {
         'texts': cleanArray,
