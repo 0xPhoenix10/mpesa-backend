@@ -104,6 +104,9 @@ export class Credit {
     @Field(() => Float, {nullable:true})
     amountWithFees!: number | null;
 
+    @Field(() => Float, {nullable:true,defaultValue:0})
+    payNowAmount!: number | null;
+
     @Field(() => Float, {nullable:true})
     seviFeesAmount!: number | null;
 
@@ -133,6 +136,9 @@ export class Credit {
 
     @Field(() => [Installment], {nullable:true})
     installments?: Array<Installment>;
+
+    @Field(() => Float, {nullable:true})
+    payLaterAmount!: number | null;
 
     @Field(() => CreditCount, {nullable:false})
     _count?: CreditCount;

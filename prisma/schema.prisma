@@ -359,6 +359,7 @@ model Credit {
   orderWalletId              String?             @map("order_wallet_id")
   fundFeesAmount             Float?              @default(0) @map("fund_fees_amount")
   amountWithFees             Float?              @map("amount_with_fees")
+  payNowAmount               Float?              @default(0) @map("pay_now_amount")
   seviFeesAmount             Float?              @map("sevi_fees_amount")
   orderWalletShareFeesAmount Float?              @default(0) @map("order_wallet_share_fees_amount")
   fundPostDeliveryAmount     Float?              @default(0) @map("fund_post_delivery_amount`")
@@ -369,6 +370,7 @@ model Credit {
   order                      Order?              @relation(fields: [orderId], references: [id])
   user                       User?               @relation(fields: [userId], references: [id])
   installments               Installment[]
+  payLaterAmount             Float?              @map("pay_later_amount")
 
   @@map("credit")
 }

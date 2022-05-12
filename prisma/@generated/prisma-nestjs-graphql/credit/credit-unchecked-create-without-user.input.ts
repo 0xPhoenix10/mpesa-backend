@@ -96,6 +96,9 @@ export class CreditUncheckedCreateWithoutUserInput {
     amountWithFees?: number;
 
     @Field(() => Float, {nullable:true})
+    payNowAmount?: number;
+
+    @Field(() => Float, {nullable:true})
     seviFeesAmount?: number;
 
     @Field(() => Float, {nullable:true})
@@ -106,4 +109,7 @@ export class CreditUncheckedCreateWithoutUserInput {
 
     @Field(() => InstallmentUncheckedCreateNestedManyWithoutCreditInput, {nullable:true})
     installments?: InstallmentUncheckedCreateNestedManyWithoutCreditInput;
+
+    @Field(() => Float, {nullable:true})
+    payLaterAmount?: number;
 }

@@ -103,6 +103,9 @@ export class CreditGroupBy {
     amountWithFees?: number;
 
     @Field(() => Float, {nullable:true})
+    payNowAmount?: number;
+
+    @Field(() => Float, {nullable:true})
     seviFeesAmount?: number;
 
     @Field(() => Float, {nullable:true})
@@ -110,6 +113,9 @@ export class CreditGroupBy {
 
     @Field(() => Float, {nullable:true})
     fundPostDeliveryAmount?: number;
+
+    @Field(() => Float, {nullable:true})
+    payLaterAmount?: number;
 
     @Field(() => CreditCountAggregate, {nullable:true})
     _count?: CreditCountAggregate;

@@ -17,7 +17,6 @@ COPY ./input ./input
 RUN apt-get update
 RUN apt-get install -y openssl
 RUN apt-get install -y procps
-RUN apt-get install -y pdfcrack
 RUN apt-get install -y default-jre
 
 RUN yarn --network-timeout 100000

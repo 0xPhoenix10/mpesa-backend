@@ -111,6 +111,9 @@ export class CreditScalarWhereInput {
     amountWithFees?: FloatNullableFilter;
 
     @Field(() => FloatNullableFilter, {nullable:true})
+    payNowAmount?: FloatNullableFilter;
+
+    @Field(() => FloatNullableFilter, {nullable:true})
     seviFeesAmount?: FloatNullableFilter;
 
     @Field(() => FloatNullableFilter, {nullable:true})
@@ -118,4 +121,7 @@ export class CreditScalarWhereInput {
 
     @Field(() => FloatNullableFilter, {nullable:true})
     fundPostDeliveryAmount?: FloatNullableFilter;
+
+    @Field(() => FloatNullableFilter, {nullable:true})
+    payLaterAmount?: FloatNullableFilter;
 }

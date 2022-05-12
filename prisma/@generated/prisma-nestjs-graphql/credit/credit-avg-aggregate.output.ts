@@ -33,6 +33,9 @@ export class CreditAvgAggregate {
     amountWithFees?: number;
 
     @Field(() => Float, {nullable:true})
+    payNowAmount?: number;
+
+    @Field(() => Float, {nullable:true})
     seviFeesAmount?: number;
 
     @Field(() => Float, {nullable:true})
@@ -40,4 +43,7 @@ export class CreditAvgAggregate {
 
     @Field(() => Float, {nullable:true})
     fundPostDeliveryAmount?: number;
+
+    @Field(() => Float, {nullable:true})
+    payLaterAmount?: number;
 }

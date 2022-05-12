@@ -93,6 +93,9 @@ export class CreditCountAggregate {
     amountWithFees!: number;
 
     @Field(() => Int, {nullable:false})
+    payNowAmount!: number;
+
+    @Field(() => Int, {nullable:false})
     seviFeesAmount!: number;
 
     @Field(() => Int, {nullable:false})
@@ -100,6 +103,9 @@ export class CreditCountAggregate {
 
     @Field(() => Int, {nullable:false})
     fundPostDeliveryAmount!: number;
+
+    @Field(() => Int, {nullable:false})
+    payLaterAmount!: number;
 
     @Field(() => Int, {nullable:false})
     _all!: number;

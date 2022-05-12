@@ -30,9 +30,11 @@ export enum CreditScalarFieldEnum {
     orderWalletId = "orderWalletId",
     fundFeesAmount = "fundFeesAmount",
     amountWithFees = "amountWithFees",
+    payNowAmount = "payNowAmount",
     seviFeesAmount = "seviFeesAmount",
     orderWalletShareFeesAmount = "orderWalletShareFeesAmount",
-    fundPostDeliveryAmount = "fundPostDeliveryAmount"
+    fundPostDeliveryAmount = "fundPostDeliveryAmount",
+    payLaterAmount = "payLaterAmount"
 }
 
 

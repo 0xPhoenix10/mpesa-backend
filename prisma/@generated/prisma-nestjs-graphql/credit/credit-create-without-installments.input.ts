@@ -86,6 +86,9 @@ export class CreditCreateWithoutInstallmentsInput {
     amountWithFees?: number;
 
     @Field(() => Float, {nullable:true})
+    payNowAmount?: number;
+
+    @Field(() => Float, {nullable:true})
     seviFeesAmount?: number;
 
     @Field(() => Float, {nullable:true})
@@ -111,4 +114,7 @@ export class CreditCreateWithoutInstallmentsInput {
 
     @Field(() => UserCreateNestedOneWithoutCreditsInput, {nullable:true})
     user?: UserCreateNestedOneWithoutCreditsInput;
+
+    @Field(() => Float, {nullable:true})
+    payLaterAmount?: number;
 }

@@ -1,42 +1,45 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
-const https = require('https');
+import { Injectable } from '@nestjs/common';
 import { MpesaStatements } from './services/getMpesaStatements.service';
 const fs = require('fs');
 import { findPhoneNumbersInText } from 'libphonenumber-js';
 import parseMobile from 'libphonenumber-js/mobile';
-import { CrackPassword } from './services/crackPassword.service';
 import { getDataFromPDF } from './services/tabula.service';
-import { MpesaTransactions } from './services/mpesa/transactions.service';
-import { OriginUser } from './services/mpesa/originUser';
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'; // ES Modules import
 import { elastic } from './repositories/es.repository';
 import {
-  allDocs,
   avg3month, avgFromRange,
   generalAggs,
   personalTransactionCountLast30days, searchTransactionByDescription,
   totalCash,
 } from './repositories/queries/agr';
+import { LabelService } from './services/getLabels.service';
+
 @Injectable()
 export class DocumentService {
   async onModuleInit() {
-    // this.mpesaStatements();
+    // console.log('process:', process);
+  }
 
+  async processDoc(document, password) {
+    try {
+      const [ filename ] = document.split('.');
+      const val: any = await getDataFromPDF(`./input/${filename}`, password, 'all');
+      // fs.writeFile('./input/test.txt', JSON.stringify(val), null, (err) => {
+      //   console.log('err:', err);
+      // });
+      const user = await elastic.user(val);
+      // console.log('user:', user);
+      const initiateDocCheck = await new LabelService().run(val.transaction);
+      // console.log('initiateDocCheck:', initiateDocCheck);
 
-    // const val = await getDataFromPDF('./input/MPESA_Statement_2021-03-22_to_2022-03-22_2547xxxxxx246.pdf', '24564409-1877', 'all');
-    
-    // toExcel(val);
-
-    // const originUser = await OriginUser(val);
-
-    // await MpesaTransactions(originUser, val.transactions);
-
-    // this.getDocumentDetails({ password: '24564409-1877', key:'locked/1.pdf', fileName: '1.pdf' });
+      return { userId: user._id, name: val.user.name, phoneNumber: val.user.phoneNumber, awaitToken: initiateDocCheck };
+    } catch (err){
+      throw new Error(err);
+    }
   }
 
   async stats(userId): Promise<any> {
     const { _source: user } = await  elastic.doc(userId, 'user' );
-    
+    // console.log('user:', user);
     const transactionDetails =  await elastic.query(generalAggs(userId), 'mpesa-transactions' );
     return ({ transactionDetails, user });
   }
@@ -122,12 +125,4 @@ export class DocumentService {
       throw new Error(err);
     }
   }
-
-}
-
-
-
-
-function getSignedUrl(client: S3Client, command: GetObjectCommand, arg2: { expiresIn: number; }) {
-  throw new Error('Function not implemented.');
 }
