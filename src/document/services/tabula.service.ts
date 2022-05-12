@@ -3,9 +3,9 @@ import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
 import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
 import { getLabelsML } from '../../textToLabel/bulkProcessLabelsML';
-// import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
-// import { textToLabels } from '../../textToLabel/textInput';
-// import { NodeLabel } from '../type/nodeLabel.enum';
+import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
+import { textToLabels } from '../../textToLabel/textInput';
+import { NodeLabel } from '../type/nodeLabel.enum';
 
 
 const knownSummaryItems = [
@@ -79,90 +79,93 @@ const knownUserItems = [
 ];
 
 export const getDataFromPDF = async (file: string, password: string, pages: '1' | '2' | 'all') => {
-  const tableData = await Tabula(file, password, pages);
-  if (!tableData) throw new Error('can not get the table data');
-  const transactions = [];
-  const summary = {};
-  const user = { documentId: password };
+  try {
+    const tableData = await Tabula(file, password, pages);
+    if (!tableData) throw new Error('can not get the table data');
+    const transactions = [];
+    const summary = {};
+    const user = { documentId: password };
 
-  for (const page of tableData.table) {
-    for (const row of page.data) {
-      const textFirstItem = row[0]?.text;
+    for (const page of tableData.table) {
+      for (const row of page.data) {
+        const textFirstItem = row[0]?.text;
 
-      //
-      // summary
-      //
-      knownSummaryItems.forEach(item => {
-        if (textFirstItem === item.field) {
-          summary[item.name] = {
-            in: row[1]?.text ? parseFloat(row[1]?.text.replaceAll(',', '')) : null,
-            out: row[2]?.text ? parseFloat(row[2]?.text.replaceAll(',', '')) : null,
-          };
-        }
-      });
+        //
+        // summary
+        //
+        knownSummaryItems.forEach(item => {
+          if (textFirstItem === item.field) {
+            summary[item.name] = {
+              in: row[1]?.text ? parseFloat(row[1]?.text.replaceAll(',', '')) : null,
+              out: row[2]?.text ? parseFloat(row[2]?.text.replaceAll(',', '')) : null,
+            };
+          }
+        });
 
-      // const transactionsTypes = [
-      //   {
-      //     field: 'Funds received from',
-      //     name: 'from',
-      //     label: NodeLabel.USER,
-      //     value: (item): DescriptionDeconstructionUser => {
-      //       return textToLabels(item, NodeLabel.USER);
-      //     },
-      //   },
-      //   {
-      //     field: 'Customer Transfer to',
-      //     name: 'to',
-      //     label: NodeLabel.USER,
-      //     value: (item): DescriptionDeconstructionUser =>  {
-      //       return textToLabels(item, NodeLabel.USER);
-      //     },
-      //   },
-      //   {
-      //     field: 'Customer Payment to',
-      //     name: 'to',
-      //     label: NodeLabel.USER,
-      //     value: (item) : DescriptionDeconstructionUser => {
-      //       return textToLabels(item, NodeLabel.USER);
-      //     },
-      //   },
-      //   {
-      //     field: 'Business Payment from',
-      //     name: 'from',
-      //     label: NodeLabel.ACCOUNT,
-      //     value: (item) : DescriptionDeconstructionUser => {
-      //       return textToLabels(item, NodeLabel.ACCOUNT);
-      //     },
-      //   },
-      //   {
-      //     field: 'Merchant Payment Online to',
-      //     name: 'to',
-      //     label: NodeLabel.ACCOUNT,
-      //     value: (item) => {
-      //       return textToLabels(item, NodeLabel.ACCOUNT );
-      //     },
+        const transactionsTypes = [
+          {
+            field: 'Funds received from',
+            name: 'from',
+            label: NodeLabel.USER,
+            value: (item): DescriptionDeconstructionUser => {
+              return textToLabels(item, NodeLabel.USER);
+            },
+          },
+          {
+            field: 'Customer Transfer to',
+            name: 'to',
+            label: NodeLabel.USER,
+            value: (item): DescriptionDeconstructionUser =>  {
+              return textToLabels(item, NodeLabel.USER);
+            },
+          },
+          {
+            field: 'Customer Payment to',
+            name: 'to',
+            label: NodeLabel.USER,
+            value: (item) : DescriptionDeconstructionUser => {
+              return textToLabels(item, NodeLabel.USER);
+            },
+          },
+          {
+            field: 'Business Payment from',
+            name: 'from',
+            label: NodeLabel.ACCOUNT,
+            value: (item) : DescriptionDeconstructionUser => {
+              return textToLabels(item, NodeLabel.ACCOUNT);
+            },
+          },
+          {
+            field: 'Merchant Payment Online to',
+            name: 'to',
+            label: NodeLabel.ACCOUNT,
+            value: (item) => {
+              return textToLabels(item, NodeLabel.ACCOUNT );
+            },
 
-      //   },
-      // ];
+          },
+        ];
  
 
-      //
-      // transactions details
-      // 
-      if (textFirstItem.length === 10) {
-        const transactionsDetails = row[2]?.text.replaceAll('\r', ' ').replace(/ +(?= )/g, '');
-        // let node = null;
-        // transactionsTypes.forEach(item => {
-        //   if (transactionsDetails.includes(item.field)) {
-        //     node = { direction: item.name, values: item.value(transactionsDetails), label: item.label };
-        //   } 
-        // });
-        const amountIn = row[4]?.text ? parseFloat(row[4]?.text.replaceAll(',', '')) : null;
-        const amountOut = row[5]?.text ? Math.abs(parseFloat(row[5]?.text.replaceAll(',', ''))) : null;
-        const amount = amountIn || amountOut;
+        //
+        // transactions details
+        // 
+        if (textFirstItem.length === 10) {
+
+          const transactionsDetails = row[2]?.text.replaceAll('\r', ' ').replace(/ +(?= )/g, '');
+
+          let node = null;
+          transactionsTypes.forEach(item => {
+            if (transactionsDetails.includes(item.field)) {
+              node = { direction: item.name, values: item.value(transactionsDetails), label: item.label };
+            } 
+          });
+
+          const amountIn = row[4]?.text ? parseFloat(row[4]?.text.replaceAll(',', '')) : null;
+          const  amountOut = row[5]?.text ? Math.abs(parseFloat(row[5]?.text.replaceAll(',', ''))) : null;
+          const amount = amountIn || amountOut;
         
-        const get = { 
-          transaction: {
+          const get = { 
             mpesaTransactionId: row[0]?.text,
             createdAt: new Date(row[1]?.text).toISOString(),
             description: transactionsDetails,
@@ -173,32 +176,31 @@ export const getDataFromPDF = async (file: string, password: string, pages: '1' 
             method: TransactionMethodEnum.MPESA,
             amount: amount,
             balanceAfter: row[6]?.text ? parseFloat(row[6]?.text.replaceAll(',', '')) : null,
-          }, 
-          // node,
-        };
-        transactions.push(get);
+          };
+          transactions.push(get);
+        }
       }
     }
+
+    //
+    // Personal data
+    //
+    for (const firstPage of tableData.raw[0].data) {
+      const foundText = firstPage[0].text;
+
+      if (!foundText) continue;
+
+      knownUserItems.forEach(item => {
+        if (foundText.startsWith(item.field)) {
+          user[item.name] = item.value(firstPage);
+        }
+      });
+
+    }
+
+    return { user, summary, transactions };
+  } catch (err){
+    throw new Error(err);
   }
-
-  //
-  // Personal data
-  //
-  for (const firstPage of tableData.raw[0].data) {
-    const foundText = firstPage[0].text;
-
-    if (!foundText) continue;
-
-    knownUserItems.forEach(item => {
-      if (foundText.startsWith(item.field)) {
-        user[item.name] = item.value(firstPage);
-      }
-    });
-
-  }
-
-  getLabelsML(transactions);
-
-  return { user, summary, transactions };
 };
 

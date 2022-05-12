@@ -22,3 +22,4 @@ process.env.NODE_ENV = "development"
 process.env.BEYONIC_WEBHOOK_KEY = "kdgs"
 process.env.DBEYONIC_WEBHOOK_KEY = "kdgs"
 process.env.ELASTIC_URL = 'http://localhost:9200'
+process.env.LABELS_URL = 'http://localhost:9000'

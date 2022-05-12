@@ -91,6 +91,9 @@ export class CreditUpdateInput {
     amountWithFees?: NullableFloatFieldUpdateOperationsInput;
 
     @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
+    payNowAmount?: NullableFloatFieldUpdateOperationsInput;
+
+    @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
     seviFeesAmount?: NullableFloatFieldUpdateOperationsInput;
 
     @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
@@ -119,4 +122,7 @@ export class CreditUpdateInput {
 
     @Field(() => InstallmentUpdateManyWithoutCreditInput, {nullable:true})
     installments?: InstallmentUpdateManyWithoutCreditInput;
+
+    @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
+    payLaterAmount?: NullableFloatFieldUpdateOperationsInput;
 }

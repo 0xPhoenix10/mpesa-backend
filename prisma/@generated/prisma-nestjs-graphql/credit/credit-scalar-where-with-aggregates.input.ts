@@ -111,6 +111,9 @@ export class CreditScalarWhereWithAggregatesInput {
     amountWithFees?: FloatNullableWithAggregatesFilter;
 
     @Field(() => FloatNullableWithAggregatesFilter, {nullable:true})
+    payNowAmount?: FloatNullableWithAggregatesFilter;
+
+    @Field(() => FloatNullableWithAggregatesFilter, {nullable:true})
     seviFeesAmount?: FloatNullableWithAggregatesFilter;
 
     @Field(() => FloatNullableWithAggregatesFilter, {nullable:true})
@@ -118,4 +121,7 @@ export class CreditScalarWhereWithAggregatesInput {
 
     @Field(() => FloatNullableWithAggregatesFilter, {nullable:true})
     fundPostDeliveryAmount?: FloatNullableWithAggregatesFilter;
+
+    @Field(() => FloatNullableWithAggregatesFilter, {nullable:true})
+    payLaterAmount?: FloatNullableWithAggregatesFilter;
 }

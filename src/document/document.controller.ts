@@ -1,16 +1,17 @@
 import { Controller, Post, UseInterceptors, UploadedFiles, Get, Query, Body, Res, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { getDataFromPDF } from './services/tabula.service';
-const fs = require('fs').promises;
 import { toExcel } from './export/toExcel';
 import { createReadStream } from 'fs';
-import { elastic } from './repositories/es.repository';
 import { DocumentService } from './document.service';
 import { TransactionStatsDto } from './transaction-stats.dto';
+import { LabelService } from './services/getLabels.service';
 
 @Controller('file')
 export class DocumentController {
-  constructor( private documentService: DocumentService ){}
+  constructor( 
+    private documentService: DocumentService, 
+    private labelService: LabelService,
+  ){}
 
 
   @Post('uploadMultiFiles')
@@ -20,24 +21,33 @@ export class DocumentController {
   ))
   async uploadMultiFiles(@UploadedFiles() files: Array<Express.Multer.File>) {
     return files;
-  }
+  } 
 
-  @Get('processDoc/:doc')
+  @Post('processDoc/:doc')
   async processDoc(@Query() query, @Res() res, @Param() params) {
     try {
-      const [ filename ] = params.doc.split('.');
-      const val: any = await getDataFromPDF(`./input/${filename}`, query.password, 'all');
-      const setData = await elastic.mpesaTransactions(val, 'mpesa-transactions' );
-      
-      res.send({ userId: setData._id, name: val.user.name, phoneNumber: val.user.phoneNumber });
+      console.log('start proccessing ');
+      const data = await  this.documentService.processDoc( params.doc, query.password);
+      res.send(data);
     } catch (err){
       throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }
   }
 
-  @Get('stats/:userId')
+  @Post('processStatus/:id')
+  async processStatus(@Query() query, @Res() res, @Param() params) {
+    try {
+      const val = await this.labelService.check(params.id);
+      res.send(val);
+    } catch (err){
+      throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  @Post('stats/:userId')
   async stats(@Query() query: TransactionStatsDto, @Param('userId') userId) {
     const { type } = query;
+    console.log(type);
 
     try {
       switch (type) {

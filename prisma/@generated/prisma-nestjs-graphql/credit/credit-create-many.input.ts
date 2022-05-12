@@ -98,6 +98,9 @@ export class CreditCreateManyInput {
     amountWithFees?: number;
 
     @Field(() => Float, {nullable:true})
+    payNowAmount?: number;
+
+    @Field(() => Float, {nullable:true})
     seviFeesAmount?: number;
 
     @Field(() => Float, {nullable:true})
@@ -105,4 +108,7 @@ export class CreditCreateManyInput {
 
     @Field(() => Float, {nullable:true})
     fundPostDeliveryAmount?: number;
+
+    @Field(() => Float, {nullable:true})
+    payLaterAmount?: number;
 }

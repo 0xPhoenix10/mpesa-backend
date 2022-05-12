@@ -116,6 +116,9 @@ export class CreditWhereInput {
     amountWithFees?: FloatNullableFilter;
 
     @Field(() => FloatNullableFilter, {nullable:true})
+    payNowAmount?: FloatNullableFilter;
+
+    @Field(() => FloatNullableFilter, {nullable:true})
     seviFeesAmount?: FloatNullableFilter;
 
     @Field(() => FloatNullableFilter, {nullable:true})
@@ -144,4 +147,7 @@ export class CreditWhereInput {
 
     @Field(() => InstallmentListRelationFilter, {nullable:true})
     installments?: InstallmentListRelationFilter;
+
+    @Field(() => FloatNullableFilter, {nullable:true})
+    payLaterAmount?: FloatNullableFilter;
 }

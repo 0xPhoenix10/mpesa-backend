@@ -100,6 +100,9 @@ export class CreditUncheckedUpdateWithoutCreditConfigurationInput {
     amountWithFees?: NullableFloatFieldUpdateOperationsInput;
 
     @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
+    payNowAmount?: NullableFloatFieldUpdateOperationsInput;
+
+    @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
     seviFeesAmount?: NullableFloatFieldUpdateOperationsInput;
 
     @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
@@ -110,4 +113,7 @@ export class CreditUncheckedUpdateWithoutCreditConfigurationInput {
 
     @Field(() => InstallmentUncheckedUpdateManyWithoutCreditInput, {nullable:true})
     installments?: InstallmentUncheckedUpdateManyWithoutCreditInput;
+
+    @Field(() => NullableFloatFieldUpdateOperationsInput, {nullable:true})
+    payLaterAmount?: NullableFloatFieldUpdateOperationsInput;
 }

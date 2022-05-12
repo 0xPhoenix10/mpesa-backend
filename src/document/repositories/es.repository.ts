@@ -29,24 +29,28 @@ export const elastic = {
     });
   },
 
-  async mpesaTransactions(docs: any, index: any) {
+  async user(docs: any) {
     const user = await ESclient.index({
       index: 'user',
       body: { ...docs.user, mpesaStatementSummary: docs.summary },
     });
-    
+    return user;
+  },
+
+  async mpesaTransactions(transactions: any, index: any, user: any) {
     const list = [];
-    await docs.transactions.map(item => {
+    await transactions.transactions.map((item, arrayIndexNumber) => {
       const node = flattenObject(item.node?.values);
       list.push(
         { create: { _index:  index, _id: `${item.transaction.mpesaTransactionId}-${item.transaction.description}` } }, 
-        { ...item.transaction, ...node, user: user._id  });
+        { ...item.transaction, ...node, user: user._id, arrayIndexNumber });
     });
-    await ESclient.bulk({
+
+    ESclient.bulk({
       body: list,
     });
 
-    return user;
+    return list;
   },
 
   async query(query: any, index: any) {

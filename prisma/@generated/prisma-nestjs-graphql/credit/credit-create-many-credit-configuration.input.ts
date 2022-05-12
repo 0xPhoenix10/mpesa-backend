@@ -95,6 +95,9 @@ export class CreditCreateManyCreditConfigurationInput {
     amountWithFees?: number;
 
     @Field(() => Float, {nullable:true})
+    payNowAmount?: number;
+
+    @Field(() => Float, {nullable:true})
     seviFeesAmount?: number;
 
     @Field(() => Float, {nullable:true})
@@ -102,4 +105,7 @@ export class CreditCreateManyCreditConfigurationInput {
 
     @Field(() => Float, {nullable:true})
     fundPostDeliveryAmount?: number;
+
+    @Field(() => Float, {nullable:true})
+    payLaterAmount?: number;
 }

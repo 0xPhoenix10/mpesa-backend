@@ -24,5 +24,6 @@ export const Tabula = async (file = './output/test.pdf', password = '123', pages
     }
   }
 
-  return { table: await tableData(), raw: await rawData() };
+  return { 
+    table: await tableData(), raw: await rawData() };
 };

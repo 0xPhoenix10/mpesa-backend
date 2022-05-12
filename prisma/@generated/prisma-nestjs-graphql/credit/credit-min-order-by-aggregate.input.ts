@@ -93,6 +93,9 @@ export class CreditMinOrderByAggregateInput {
     amountWithFees?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
+    payNowAmount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
     seviFeesAmount?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
@@ -100,4 +103,7 @@ export class CreditMinOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     fundPostDeliveryAmount?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    payLaterAmount?: keyof typeof SortOrder;
 }

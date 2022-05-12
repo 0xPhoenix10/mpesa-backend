@@ -32,6 +32,9 @@ export class CreditSumAggregateInput {
     amountWithFees?: true;
 
     @Field(() => Boolean, {nullable:true})
+    payNowAmount?: true;
+
+    @Field(() => Boolean, {nullable:true})
     seviFeesAmount?: true;
 
     @Field(() => Boolean, {nullable:true})
@@ -39,4 +42,7 @@ export class CreditSumAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     fundPostDeliveryAmount?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    payLaterAmount?: true;
 }
