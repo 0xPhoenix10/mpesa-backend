@@ -1,5 +1,3 @@
-import { RemovePassword } from './removePasswordPDF.service';
-
 const imaps = require('imap-simple');
 const fs = require('fs');
 import { writeFile } from 'fs/promises';

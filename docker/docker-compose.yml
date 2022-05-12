@@ -36,6 +36,11 @@ services:
   labels:
     image: labels:latest
     container_name: labels
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - capabilities: [ gpu ]
     networks:
       - shared-nw
     env_file:

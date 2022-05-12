@@ -16,7 +16,6 @@ if (process.env.NODE_ENV === 'production') {
   url = `${publicURL.protocol}//${username}:${password}@${publicURL.host}${publicURL.path}`;
 }
 
-
 const ESclient = new Client({ node: url });
 
 export const elastic = {
@@ -30,11 +29,16 @@ export const elastic = {
   },
 
   async user(docs: any) {
-    const user = await ESclient.index({
-      index: 'user',
-      body: { ...docs.user, mpesaStatementSummary: docs.summary },
-    });
-    return user;
+    try {
+      const user = await ESclient.index({
+        index: 'user',
+        body: { ...docs.user, mpesaStatementSummary: docs.summary },
+      });
+      return user;
+    } catch (err){
+      console.log('err:', err);
+      throw new Error(err);
+    }
   },
 
   async mpesaTransactions(transactions: any, index: any, user: any) {

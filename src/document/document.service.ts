@@ -23,13 +23,14 @@ export class DocumentService {
     try {
       const [ filename ] = document.split('.');
       const val: any = await getDataFromPDF(`./input/${filename}`, password, 'all');
+      // console.log('val:', val);
       // fs.writeFile('./input/test.txt', JSON.stringify(val), null, (err) => {
       //   console.log('err:', err);
       // });
       const user = await elastic.user(val);
-      // console.log('user:', user);
-      const initiateDocCheck = await new LabelService().run(val.transaction);
-      // console.log('initiateDocCheck:', initiateDocCheck);
+      console.log('user:', user);
+      const initiateDocCheck = await new LabelService().run(val.transactions);
+      console.log('initiateDocCheck:', initiateDocCheck);
 
       return { userId: user._id, name: val.user.name, phoneNumber: val.user.phoneNumber, awaitToken: initiateDocCheck };
     } catch (err){
