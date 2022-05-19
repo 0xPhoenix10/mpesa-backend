@@ -1,6 +1,6 @@
-import { flattenObject } from '../../../helpers/flatten';
-import { document } from '../../../user/user.db';
-import { userNeoDocuments } from '../../../user/user.neo';
+// import { flattenObject } from '../../../helpers/flatten';
+// import { document } from '../../../old/user/user.db';
+import { userNeoDocuments } from '../../../old/user/user.neo';
 
 export async function OriginUser(documentData) {
   const { name, documentId,  phoneNumber, email, requestDate, period } = documentData.user;

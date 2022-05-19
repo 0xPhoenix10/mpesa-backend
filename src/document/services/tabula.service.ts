@@ -2,9 +2,9 @@ import { Tabula } from 'src/helpers/tabula';
 import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
 import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
-import { getLabelsML } from '../../textToLabel/bulkProcessLabelsML';
+import { getLabelsML } from '../textToLabel/bulkProcessLabelsML';
 import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
-import { textToLabels } from '../../textToLabel/textInput';
+import { textToLabels } from '../textToLabel/textInput';
 import { NodeLabel } from '../type/nodeLabel.enum';
 
 

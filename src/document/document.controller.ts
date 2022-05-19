@@ -5,6 +5,7 @@ import { createReadStream } from 'fs';
 import { DocumentService } from './document.service';
 import { TransactionStatsDto } from './transaction-stats.dto';
 import { LabelService } from './services/getLabels.service';
+import { labelQueue } from '../helpers/bullmq';
 
 @Controller('file')
 export class DocumentController {
@@ -22,6 +23,18 @@ export class DocumentController {
   async uploadMultiFiles(@UploadedFiles() files: Array<Express.Multer.File>) {
     return files;
   } 
+
+  @Post('event')
+  async event(@Query() query, @Res() res, @Param() params) {
+    console.log('params:', params);
+    console.log('query:', query);
+    try {
+      labelQueue.add('test', { id:'serds' });
+      res.send('data');
+    } catch (err){
+      throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
+    }
+  }
 
   @Post('processDoc/:doc')
   async processDoc(@Query() query, @Res() res, @Param() params) {

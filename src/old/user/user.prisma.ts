@@ -1,4 +1,4 @@
-import { prismaClient } from '../../prisma/auth';
+import { prismaClient } from '../../../prisma/auth';
 
 
 export const userPrisma = {

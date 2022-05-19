@@ -3,6 +3,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { DocumentModule } from './document/document.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { QueueModule } from './queue/queue.module';
+
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -15,6 +17,7 @@ import { join } from 'path';
       playground: true,
     }),
     DocumentModule,
+    QueueModule,
   ],
   providers: [],
 })

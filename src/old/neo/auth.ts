@@ -1,4 +1,4 @@
-import { flattenObject } from '../helpers/flatten';
+import { flattenObject } from '../../helpers/flatten';
 
 const neo4j = require('neo4j-driver');
 

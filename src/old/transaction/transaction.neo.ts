@@ -1,4 +1,4 @@
-import { flattenObject } from '../helpers/flatten';
+import { flattenObject } from '../../helpers/flatten';
 import { neo } from '../neo/auth';
 
 export const transactionNeo = {

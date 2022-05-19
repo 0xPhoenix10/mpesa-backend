@@ -1,7 +1,7 @@
 // import { User } from '@prisma/client';
 import { User } from '@prisma/client';
 import { aql } from 'arangojs';
-import { db } from 'src/partners/authArango';
+import { db } from 'src/old/partners/authArango';
 
 export const document = { 
 
