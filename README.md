@@ -15,3 +15,10 @@ upload this file to localhost:8001/file/uploadMultiFiles
 The process the docs with url > replace the filename with the name from the above url
 
 localhost:8001/file/processDoc/38f0e85eb9bd04b641b6d9ecb9aa2bba?password=35388008
+
+
+
+
+```Queue system for processing one doc at the time, and await for processing it
+
+http://localhost:8001/admin/queues

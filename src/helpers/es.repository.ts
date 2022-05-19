@@ -1,8 +1,8 @@
 import { Client } from '@elastic/elasticsearch';
 // import { flatten } from '@nestjs/common';
 import { parse } from 'url';
-import { flattenObject } from './flatten';
-const fs = require('fs');
+// import { flattenObject } from './flatten';
+// const fs = require('fs');
 
 // import { SearchIndexEnum } from './enums/search-index.enum';
 const username = process.env.ELASTIC_USERNAME;
@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'development') url = developmentURL;
 if (process.env.NODE_ENV === 'production') {
   url = `${publicURL.protocol}//${username}:${password}@${publicURL.host}${publicURL.path}`;
 }
-
+console.log('url:', url);
 const ESclient = new Client({ node: url });
 
 export const elasticSearch = {
@@ -42,22 +42,17 @@ export const elasticSearch = {
   },
 
   async mpesaTransactions(transactions: any, index: any, userId: any) {
-    console.log('transactions:', transactions);
-    console.log('saveTransaction');
     const list = [];
     await transactions.map((item, arrayIndexNumber) => {
-      console.log('item:', item);
-      // const node = flattenObject(item.node?.values);
       list.push(
         { create: { _index:  index, _id: `${item.mpesaTransactionId}-${item.description}` } }, 
         { ...item, userId, arrayIndexNumber });
     });
-    
-    console.log('list:', list);
+    // console.log('list:', list);
     await ESclient.bulk({
       body: list,
     });
-
+    
     return list;
   },
 

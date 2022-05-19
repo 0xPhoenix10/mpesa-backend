@@ -12,6 +12,7 @@ import { LabelService } from './services/getLabels.service';
 export class DocumentService {
   async onModuleInit() {
     // console.log('process:', process);
+    elasticSearch.syncToEs({ name:'bartel' }, 'some');
   }
 
   async processDoc(document, password) {

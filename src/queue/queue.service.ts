@@ -15,16 +15,11 @@ export class QueueService {
 
   listenLabels() {
     new Worker('labels', async (job)=>{
-
       if (job.name === 'labels') {
         try {
-          // console.log('job:', job.data);
           const { transactions, awaitLabelId, userId } = job.data;
-          // job.moveToFailed(new Error('this failed yes'), '123');
           await this.awaitForDoneToMapData(transactions, awaitLabelId);
-          // console.log('done getting the Labels');
           const labels = await this.export(awaitLabelId);
-          // console.log('labels:', labels);
           await this.toElasticSearch(userId, transactions, labels.data );
           // send Email with Result
         } catch (err){
@@ -46,7 +41,6 @@ export class QueueService {
       const checkStatus = await getData(id);
       if (checkStatus.status === 'done') {
         // great we can proceed
-        console.log('all done');
         return 'success';
       } else {
         await sleep(1000);
@@ -80,11 +74,10 @@ export class QueueService {
       const list = transactions.map((item, index) => {
         return { ...item, userId, entities: labels[index].entities };
       });
-      console.log('list:', list);
       await elasticSearch.mpesaTransactions(list, 'transactions', userId);
-      console.log('done sending to elastic');
    
     } catch (err) {
+      console.log('err:', err);
       throw new Error('could not send transactions to elastic seatch');
     }
   }
