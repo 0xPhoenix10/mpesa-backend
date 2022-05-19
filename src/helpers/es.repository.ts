@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const ESclient = new Client({ node: url });
 
-export const elastic = {
+export const elasticSearch = {
   async syncToEs(doc: any, index: any) {
     const { id, ...body } = doc;
     ESclient.index({
@@ -41,16 +41,20 @@ export const elastic = {
     }
   },
 
-  async mpesaTransactions(transactions: any, index: any, user: any) {
+  async mpesaTransactions(transactions: any, index: any, userId: any) {
+    console.log('transactions:', transactions);
+    console.log('saveTransaction');
     const list = [];
-    await transactions.transactions.map((item, arrayIndexNumber) => {
-      const node = flattenObject(item.node?.values);
+    await transactions.map((item, arrayIndexNumber) => {
+      console.log('item:', item);
+      // const node = flattenObject(item.node?.values);
       list.push(
-        { create: { _index:  index, _id: `${item.transaction.mpesaTransactionId}-${item.transaction.description}` } }, 
-        { ...item.transaction, ...node, user: user._id, arrayIndexNumber });
+        { create: { _index:  index, _id: `${item.mpesaTransactionId}-${item.description}` } }, 
+        { ...item, userId, arrayIndexNumber });
     });
-
-    ESclient.bulk({
+    
+    console.log('list:', list);
+    await ESclient.bulk({
       body: list,
     });
 

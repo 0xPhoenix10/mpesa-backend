@@ -3,14 +3,13 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { toExcel } from './export/toExcel';
 import { createReadStream } from 'fs';
 import { DocumentService } from './document.service';
-import { LabelService } from './services/getLabels.service';
 import { labelQueue } from '../helpers/bullmq';
 
 @Controller('file')
 export class DocumentController {
   constructor( 
     private documentService: DocumentService, 
-    private labelService: LabelService,
+    // private labelService: LabelService,
   ){}
 
 
@@ -35,7 +34,7 @@ export class DocumentController {
     }
   }
 
-  @Post('processDoc/:doc')
+  @Post('process/:doc')
   async processDoc(@Query() query, @Res() res, @Param() params) {
     try {
       console.log('start proccessing ');
@@ -46,15 +45,15 @@ export class DocumentController {
     }
   }
 
-  @Post('processStatus/:id')
-  async processStatus(@Query() query, @Res() res, @Param() params) {
-    try {
-      const val = await this.labelService.check(params.id);
-      res.send(val);
-    } catch (err){
-      throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
-    }
-  }
+  // @Post('status/:id')
+  // async processStatus(@Query() query, @Res() res, @Param() params) {
+  //   try {
+  //     const val = await this.labelService.check(params.id);
+  //     res.send(val);
+  //   } catch (err){
+  //     throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
+  //   }
+  // }
 
   @Get('toExcel/:userId')
   async toExcel(@Query() query, @Res() res, @Param() params) {

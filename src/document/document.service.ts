@@ -4,7 +4,7 @@ const fs = require('fs');
 import { findPhoneNumbersInText } from 'libphonenumber-js';
 import parseMobile from 'libphonenumber-js/mobile';
 import { getDataFromPDF } from './services/tabula.service';
-import { elastic } from '../helpers/es.repository';
+import { elasticSearch } from '../helpers/es.repository';
 
 import { LabelService } from './services/getLabels.service';
 
@@ -22,10 +22,8 @@ export class DocumentService {
       // fs.writeFile('./input/test.txt', JSON.stringify(val), null, (err) => {
       //   console.log('err:', err);
       // });
-      const user = await elastic.user(val);
-      console.log('user:', user);
-      const initiateDocCheck = await new LabelService().run(val.transactions);
-      console.log('initiateDocCheck:', initiateDocCheck);
+      const user = await elasticSearch.user(val);
+      const initiateDocCheck = await new LabelService().run(val.transactions, user._id);
 
       return { userId: user._id, name: val.user.name, phoneNumber: val.user.phoneNumber, awaitToken: initiateDocCheck };
     } catch (err){
@@ -34,14 +32,13 @@ export class DocumentService {
   }
 
   async excelData(userId): Promise<any> {
-    const { _source: user } = await  elastic.doc(userId, 'user' );
-    const { hits: transactionsDetails } = await  elastic.query({ size:10000 }, 'mpesa-transactions' );
+    const { _source: user } = await  elasticSearch.doc(userId, 'user' );
+    const { hits: transactionsDetails } = await  elasticSearch.query({ size:10000 }, 'mpesa-transactions' );
     return { user, transactions: transactionsDetails.hits.map(item => item._source) };
   }
 
   async mpesaStatements() {
     try {
-
       // get mpesa statements
       await MpesaStatements();
     
