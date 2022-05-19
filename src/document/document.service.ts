@@ -4,7 +4,7 @@ const fs = require('fs');
 import { findPhoneNumbersInText } from 'libphonenumber-js';
 import parseMobile from 'libphonenumber-js/mobile';
 import { getDataFromPDF } from './services/tabula.service';
-import { elastic } from './repositories/es.repository';
+import { elastic } from '../helpers/es.repository';
 
 import { LabelService } from './services/getLabels.service';
 
