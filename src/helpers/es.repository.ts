@@ -1,7 +1,7 @@
 import { Client } from '@elastic/elasticsearch';
 // import { flatten } from '@nestjs/common';
 import { parse } from 'url';
-import { flattenObject } from '../../helpers/flatten';
+import { flattenObject } from './flatten';
 const fs = require('fs');
 
 // import { SearchIndexEnum } from './enums/search-index.enum';
