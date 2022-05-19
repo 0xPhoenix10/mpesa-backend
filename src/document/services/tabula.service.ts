@@ -3,9 +3,9 @@ import { differenceInDays } from 'date-fns';
 import parsePhoneNumber from 'libphonenumber-js';
 import { CurrencyEnum, TransactionMethodEnum } from '@prisma/client';
 import { getLabelsML } from '../textToLabel/bulkProcessLabelsML';
-import { DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
+import { DescriptionDeconstructionUser } from '../types/transactionDescriptionDeconstruction';
 import { textToLabels } from '../textToLabel/textInput';
-import { NodeLabel } from '../type/nodeLabel.enum';
+import { NodeLabel } from '../types/nodeLabel.enum';
 
 
 const knownSummaryItems = [

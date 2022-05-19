@@ -1,6 +1,6 @@
 import { findPhoneNumbersInText } from 'libphonenumber-js';
-import { NodeLabel } from '../type/nodeLabel.enum';
-import { DescriptionDeconstructionAccount, DescriptionDeconstructionUser } from '../type/transactionDescriptionDeconstruction';
+import { NodeLabel } from '../types/nodeLabel.enum';
+import { DescriptionDeconstructionAccount, DescriptionDeconstructionUser } from '../types/transactionDescriptionDeconstruction';
 
 function formatHiddenPhoneNumber(item) {
   const deconstruct = item.split('-')[1].trim().replaceAll('\'', '');

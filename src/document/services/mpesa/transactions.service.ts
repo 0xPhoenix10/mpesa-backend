@@ -2,7 +2,7 @@ import { AccountReprository } from '../../../old/account/account.db';
 import { TransactionReprository } from '../../../old/transaction/transaction.db';
 import { transactionNeo } from '../../../old/transaction/transaction.neo';
 import { userNeoDocuments } from '../../../old/user/user.neo';
-import { NodeLabel } from '../../type/nodeLabel.enum';
+import { NodeLabel } from '../../types/nodeLabel.enum';
 // import { nodeLabels } from '../../type/nodeLabel.enum';
 
 export const  MpesaTransactions = async  (userOrigin, items) => {

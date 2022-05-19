@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { DocumentService } from './document.service';
-import { DocumentInput } from './type/document.input';
+import { DocumentInput } from './types/document.input';
 
 @Resolver()
 export class DocumentResolver {

@@ -4,6 +4,7 @@ import { DocumentModule } from './document/document.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { QueueModule } from './queue/queue.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { QueueModule } from './queue/queue.module';
     }),
     DocumentModule,
     QueueModule,
+    StatsModule,
   ],
   providers: [],
 })
