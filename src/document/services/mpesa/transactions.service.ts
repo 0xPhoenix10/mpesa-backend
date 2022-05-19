@@ -1,7 +1,7 @@
-import { AccountReprository } from '../../../account/account.db';
-import { TransactionReprository } from '../../../transaction/transaction.db';
-import { transactionNeo } from '../../../transaction/transaction.neo';
-import { userNeoDocuments } from '../../../user/user.neo';
+import { AccountReprository } from '../../../old/account/account.db';
+import { TransactionReprository } from '../../../old/transaction/transaction.db';
+import { transactionNeo } from '../../../old/transaction/transaction.neo';
+import { userNeoDocuments } from '../../../old/user/user.neo';
 import { NodeLabel } from '../../type/nodeLabel.enum';
 // import { nodeLabels } from '../../type/nodeLabel.enum';
 

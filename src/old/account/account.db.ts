@@ -1,5 +1,5 @@
 
-import { db } from 'src/partners/authArango';
+import { db } from 'src/old/partners/authArango';
 import { aql } from 'arangojs';
 
 export const AccountReprository = {

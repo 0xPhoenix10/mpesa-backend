@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-
+// import { labelQueue } from '../../helpers/bullmq';
+import { Worker, Job } from 'bullmq';
+import { labelQueue } from '../../helpers/bullmq';
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -10,17 +12,26 @@ function sleep(ms) {
 export class LabelService {
   async onModuleInit() {
     // this.run({});
+    // labelQueue.add('transactions description', { id: 'resolve.data.dssid' });
+    // labelQueue.add('transactions description', { id: 'resolve.data.dsfdasfdssid' });
+
+    // const worker = new Worker('labels', async (job: Job) => {
+    //   // Optionally report some progress
+    //   await job.updateProgress(42);
+    
+    //   // Optionally sending an object as progress
+    //   await job.updateProgress({ foo: 'bar' });
+    
+    //   // Do something with job
+    //   return 'some value';
+    // });
   }
+  
 
   async run(transactions) {
-    // console.log('transactions:', transactions);
-    // console.log('start transa');
     const cleanArray = transactions.map(item => {
-      // console.log('item:', item);
       return item.description;
     });
-    console.log('cleanArray:', JSON.stringify(cleanArray));
-    return;
     try {
       const body = {
         'texts': cleanArray,
@@ -35,7 +46,10 @@ export class LabelService {
       });
       
       if (resolve.data.message === 'success') {
-        this.awaitForDoneToMapData(transactions, resolve.data.id);
+        // add to queue
+        labelQueue.add('transactions description', { id: resolve.data.id });
+
+        // this.awaitForDoneToMapData(transactions, resolve.data.id);
         return resolve.data.id;
       } 
     } catch (err){
@@ -83,7 +97,7 @@ export class LabelService {
       data: { id },
     });
 
-    // console.log('resolve:', resolve.data);
+    console.log('resolve:', resolve.data);
 
     // Combine all data
 
