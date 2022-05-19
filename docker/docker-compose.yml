@@ -23,13 +23,13 @@ services:
       - ../output:/app/output:cached
 
   elastic:
-    image: elasticsearch:8.1.0
+    image: elasticsearch:8.2.0
     container_name: elastic
     restart: 'no'
     networks:
       - singleNetwork
     ports:
-      - 9400:9200
+      - 9200:9200
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
