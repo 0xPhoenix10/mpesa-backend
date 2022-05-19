@@ -11,7 +11,7 @@ services:
     depends_on:
       - elastic
       - redis
-      - rabbit
+      # - rabbit
     networks:
       - singleNetwork
     env_file:

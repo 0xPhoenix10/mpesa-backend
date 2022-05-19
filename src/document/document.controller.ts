@@ -3,7 +3,6 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { toExcel } from './export/toExcel';
 import { createReadStream } from 'fs';
 import { DocumentService } from './document.service';
-import { TransactionStatsDto } from './types/transaction-stats.dto';
 import { LabelService } from './services/getLabels.service';
 import { labelQueue } from '../helpers/bullmq';
 
