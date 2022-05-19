@@ -8,7 +8,7 @@ export const redisConnection = new Redis('redis://redis:6379');
 export const labelQueue = new Queue('labels', { 
   connection: redisConnection, 
   defaultJobOptions: {
-    removeOnComplete: true, 
+    removeOnComplete: false, 
   },
 });
 
