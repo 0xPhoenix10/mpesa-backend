@@ -3,7 +3,7 @@ import { Client } from '@elastic/elasticsearch';
 import { parse } from 'url';
 // import { flattenObject } from './flatten';
 // const fs = require('fs');
-
+import fs from 'fs';
 // import { SearchIndexEnum } from './enums/search-index.enum';
 const username = process.env.ELASTIC_USERNAME;
 const password = process.env.ELASTIC_PASSWORD;
@@ -35,20 +35,30 @@ export const elasticSearch = {
         body: { ...docs.user, mpesaStatementSummary: docs.summary },
       });
       return user;
-    } catch (err){
+    } catch (err) {
       console.log('err:', err);
       throw new Error(err);
     }
   },
 
-  async mpesaTransactions(transactions: any, index: any, userId: any) {
+  async bulk(docs:any) {
+    await ESclient.bulk({
+      body: docs,
+    });
+  },
+
+  async mpesaTransactions(transactions: any, index: any) {
     const list = [];
     await transactions.map((item, arrayIndexNumber) => {
       list.push(
         { create: { _index:  index, _id: `${item.mpesaTransactionId}-${item.description}` } }, 
-        { ...item, userId, arrayIndexNumber });
+        { ...item, arrayIndexNumber });
     });
     // console.log('list:', list);
+    fs.writeFile('./input/transactionsElastic.txt', JSON.stringify(list), null, (err) => {
+      console.log('err:', err);
+    });
+    console.log('sended');
     await ESclient.bulk({
       body: list,
     });
@@ -64,7 +74,7 @@ export const elasticSearch = {
     return user;
   },
 
-  async doc(id:any, index:any){
+  async doc(id:any, index:any) {
     return ESclient.get({
       index,
       id,
