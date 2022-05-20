@@ -9,8 +9,7 @@ import { labelQueue } from '../helpers/bullmq';
 export class DocumentController {
   constructor( 
     private documentService: DocumentService, 
-    // private labelService: LabelService,
-  ){}
+  ) {}
 
 
   @Post('uploadMultiFiles')
@@ -24,12 +23,12 @@ export class DocumentController {
 
   @Post('event')
   async event(@Query() query, @Res() res, @Param() params) {
-    console.log('params:', params);
-    console.log('query:', query);
+    // console.log('params:', params);
+    // console.log('query:', query);
     try {
       labelQueue.add('test', { id:'serds' });
       res.send('data');
-    } catch (err){
+    } catch (err) {
       throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }
   }
@@ -37,10 +36,21 @@ export class DocumentController {
   @Post('process/:doc')
   async processDoc(@Query() query, @Res() res, @Param() params) {
     try {
-      console.log('start proccessing ');
+      // console.log('start proccessing ');
       const data = await  this.documentService.processDoc( params.doc, query.password);
       res.send(data);
-    } catch (err){
+    } catch (err) {
+      throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
+    }
+  }
+
+  @Get('check/:awaitToken')
+  async check(@Query() query, @Res() res, @Param() params) {
+    try {
+      // console.log('start proccessing ');
+      const data = await  this.documentService.check(params.awaitToken);
+      res.send(data);
+    } catch (err) {
       throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }
   }
@@ -64,7 +74,7 @@ export class DocumentController {
       await toExcel(data,  path);
       const file = createReadStream(path);
       return file.pipe(res);
-    } catch (err){
+    } catch (err) {
       throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }
   }

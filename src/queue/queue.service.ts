@@ -4,6 +4,7 @@ import { Worker } from 'bullmq';
 import axios from 'axios';
 import { elasticSearch } from '../helpers/es.repository';
 
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -15,6 +16,7 @@ export class QueueService {
 
   listenLabels() {
     new Worker('labels', async (job)=>{
+      // console.log('job:', job);
       if (job.name === 'labels') {
         try {
           const { transactions, awaitLabelId, userId } = job.data;
@@ -22,12 +24,12 @@ export class QueueService {
           const labels = await this.export(awaitLabelId);
           await this.toElasticSearch(userId, transactions, labels.data );
           // send Email with Result
-        } catch (err){
+        } catch (err) {
           throw new Error(err);
         }
       }
   
-    }, { connection: redisConnection });
+    }, { connection: redisConnection, concurrency: 1 });
   }
 
 
@@ -39,6 +41,9 @@ export class QueueService {
 
     for (const loop of [...Array(1000)]) {
       const checkStatus = await getData(id);
+      // if (checkStatus.message === 'Invalid id.') {
+      //   return 'alreadyDone';
+      // }
       if (checkStatus.status === 'done') {
         // great we can proceed
         return 'success';
@@ -74,7 +79,8 @@ export class QueueService {
       const list = transactions.map((item, index) => {
         return { ...item, userId, entities: labels[index].entities };
       });
-      await elasticSearch.mpesaTransactions(list, 'transactions', userId);
+
+      await elasticSearch.mpesaTransactions(list, 'transactions');
    
     } catch (err) {
       console.log('err:', err);

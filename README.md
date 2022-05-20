@@ -22,3 +22,12 @@ localhost:8001/file/processDoc/38f0e85eb9bd04b641b6d9ecb9aa2bba?password=3538800
 ```Queue system for processing one doc at the time, and await for processing it
 
 http://localhost:8001/admin/queues
+
+
+
+
+``` working on Stats can be done by running the stats API
+
+
+
+the UI of the microservice is implemented in Sevi-landing > pages > mpesa

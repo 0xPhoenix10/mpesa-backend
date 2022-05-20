@@ -6,7 +6,7 @@ import { rawDocData } from '../tests/mocks/docToDataTest';
 @Injectable()
 export class LabelService {
   async onModuleInit() {
-    this.run(rawDocData.transactions, '123');
+    // this.run(rawDocData.transactions, '123');
   }
   
   async run(transactions, userId) {
@@ -28,13 +28,13 @@ export class LabelService {
       
       if (resolve.data.message === 'success') {
         // add to queue
-        labelQueue.add('labels', { awaitLabelId: resolve.data.id, transactions, userId }, { attempts: 20,  backoff: {
+        labelQueue.add('labels', { awaitLabelId: resolve.data.id, transactions, userId }, { attempts: 10,  backoff: {
           type: 'exponential',
           delay: 1000,
         } });
         return resolve.data.id;
       } 
-    } catch (err){
+    } catch (err) {
       console.log('err:', err);
       throw new Error('something went wrong');
     }

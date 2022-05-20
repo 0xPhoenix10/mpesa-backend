@@ -7,29 +7,34 @@ import { getDataFromPDF } from './services/tabula.service';
 import { elasticSearch } from '../helpers/es.repository';
 
 import { LabelService } from './services/getLabels.service';
+import axios from 'axios';
 
 @Injectable()
 export class DocumentService {
   async onModuleInit() {
-    // console.log('process:', process);
-    elasticSearch.syncToEs({ name:'bartel' }, 'some');
   }
 
   async processDoc(document, password) {
     try {
       const [ filename ] = document.split('.');
       const val: any = await getDataFromPDF(`./input/${filename}`, password, 'all');
-      // console.log('val:', val);
-      // fs.writeFile('./input/test.txt', JSON.stringify(val), null, (err) => {
-      //   console.log('err:', err);
-      // });
+
       const user = await elasticSearch.user(val);
       const initiateDocCheck = await new LabelService().run(val.transactions, user._id);
 
       return { userId: user._id, name: val.user.name, phoneNumber: val.user.phoneNumber, awaitToken: initiateDocCheck };
-    } catch (err){
+    } catch (err) {
       throw new Error(err);
     }
+  }
+
+  async check(id) {
+    const resolve = await axios({
+      method: 'post',
+      url: `${process.env.LABELS_URL}/api-v2/check`,
+      data: { id },
+    });
+    return resolve.data;
   }
 
   async excelData(userId): Promise<any> {
@@ -86,7 +91,7 @@ export class DocumentService {
         });
       }
 
-    } catch (err){
+    } catch (err) {
       throw new Error(err);
     }
   }
