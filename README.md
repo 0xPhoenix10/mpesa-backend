@@ -1,33 +1,25 @@
-```This service is used to analyse mpesa statements
+# Mpesa Backend
 
-It's doing the following
-- uploaded Mpesa statement
-- creates json data from the uploaded PDFs
-- used transactions descriptions to get labels
-- saves all data in elasticsearch
-- return elasticsearch analytics
+Mpesa Backend is a backend service that provides integration with the M-Pesa mobile payment system. This service is built using Node.js and the Express framework, and it allows users to make and receive payments through M-Pesa.
 
+## Installation
 
-```Example
-An example mpesa statement file is located in example folder
-upload this file to localhost:8001/file/uploadMultiFiles
+To install and run this service, follow these steps:
 
-The process the docs with url > replace the filename with the name from the above url
+1. Clone this repository to your local machine.
+2. Install Node.js and npm.
+3. Configure the service by updating the `.env` file with the appropriate M-Pesa credentials.
+4. Install the required dependencies by running `npm install`.
+5. Start the service by running `npm start`.
 
-localhost:8001/file/processDoc/38f0e85eb9bd04b641b6d9ecb9aa2bba?password=35388008
+## Usage
 
+Once the service is up and running, you can interact with it using RESTful API endpoints. The API provides endpoints for initiating payments, checking payment status, and receiving payments.
 
+## Contributing
 
+We welcome contributions to this project. To contribute, please fork this repository, make your changes, and submit a pull request. Be sure to follow our contribution guidelines.
 
-```Queue system for processing one doc at the time, and await for processing it
+## License
 
-http://localhost:8001/admin/queues
-
-
-
-
-``` working on Stats can be done by running the stats API
-
-
-
-the UI of the microservice is implemented in Sevi-landing > pages > mpesa
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
