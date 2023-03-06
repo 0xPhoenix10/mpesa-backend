@@ -1,6 +1,6 @@
 # Mpesa Backend
 
-Mpesa Backend is a backend service that provides integration with the M-Pesa mobile payment system. This service is built using Node.js and the Express framework, and it allows users to make and receive payments through M-Pesa.
+Mpesa Backend is a backend service that provides integration with the M-Pesa mobile payment system. This service is built using Nest.js framework, and it allows users to make and receive payments through M-Pesa.
 
 ## Installation
 
